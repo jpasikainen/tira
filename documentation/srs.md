@@ -1,7 +1,7 @@
 # Software Requirements Specification
 
 Tietojenkäsittelytieteen kandiohjelma\
-Projektin toteutus Javalla. Dokumentaatio englanniksi poislukien viikkoraportit.
+Projektin toteutus Javalla. Dokumentaatio englanniksi.
 
 ## Description
 
