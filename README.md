@@ -2,7 +2,7 @@
 
 ## Documentation
 
-### [Design Document](https://github.com/jpasikainen/tira/blob/main/documentation/srs.md)
+### [Project Specification](https://github.com/jpasikainen/tira/blob/main/documentation/srs.md)
 
 ## Weekly reports
 
