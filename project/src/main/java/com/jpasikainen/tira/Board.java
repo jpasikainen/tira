@@ -5,21 +5,31 @@ import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Game board that stores the tiles and moves them
+ */
 public class Board {
     private int[][] tiles = new int[4][4];
     private int score = 0;
 
     public Board() {
         Arrays.stream(tiles).forEach(tile -> Arrays.fill(tile, 0));
-        System.out.println(tiles[0][0]);
-        spawnRandom();
         printBoard();
     }
 
+    /**
+     * Constructor for testing
+     */
+    public Board(int[][] tiles) {
+        this.tiles = tiles;
+        printBoard();
+    }
+
+    /**
+     * Print the game board as 4x4 grid
+     */
     private void printBoard() {
         for(int y = 0; y < tiles.length; y++) {
             for(int x = 0; x < tiles.length; x++) {
@@ -29,10 +39,17 @@ public class Board {
         }
     }
 
+    /**
+     * Get the tiles
+     * @return tiles as int[4][4]
+     */
     public int[][] getTiles() {
         return tiles;
     }
 
+    /**
+     * Spawns a tile at a random position on the board. Has either value of 2 or 4 with 10% and 90% chance respectively.
+     */
     public void spawnRandom() {
         ArrayList<Pair<Integer, Integer>> freeIntegers = getFreeTiles();
         Pair<Integer, Integer> tile = freeIntegers.get(ThreadLocalRandom.current().nextInt(0, freeIntegers.size()));
@@ -41,6 +58,10 @@ public class Board {
         tiles[tile.getKey()][tile.getValue()] = value;
     }
 
+    /**
+     * Get the slots that do not contain any tiles
+     * @return free slots as an ArrayList filled with Pair(s) containing (y,x) coordinates
+     */
     private ArrayList<Pair<Integer, Integer>> getFreeTiles() {
         ArrayList<Pair<Integer, Integer>> freeIntegers = new ArrayList<>();
         for(int y = 0; y < tiles.length; y++) {
@@ -51,9 +72,13 @@ public class Board {
         return freeIntegers;
     }
 
+    /**
+     * Move the tiles.
+     * TODO: Instead of having 4 different loops, just rotate the board accordingly to align the movement.
+     * @param key code of the pressed key
+     */
     public void moveTiles(KeyCode key) {
-        // No free tiles
-        if(getFreeTiles().size() == 0) return;
+        System.out.println(key);
 
         // Move
         if(key == KeyCode.RIGHT) {

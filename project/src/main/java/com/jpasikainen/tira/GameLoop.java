@@ -2,19 +2,20 @@ package com.jpasikainen.tira;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
-import javafx.scene.input.InputEvent;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
+/**
+ * Game loop that is run every "frame". Passes data to the GUI.
+ */
 public class GameLoop extends AnimationTimer {
     private long pastTick;
     private Board board;
 
-    public GameLoop(Scene scene) {
+    public GameLoop() {
         board = new Board();
+        board.spawnRandom();
     }
 
     private ArrayList<Integer> convertToArrayList() {

@@ -32,7 +32,7 @@ public class GameViewController {
         this.scene = scene;
         getInput();
         // Start the game loop
-        gl = new GameLoop(scene);
+        gl = new GameLoop();
         gl.start();
         drawTiles(gl.getTiles());
     }
