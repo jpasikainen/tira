@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.jpasikainen.tira/com.jpasikainen.tira.HelloApplication</mainClass>
+                            <mainClass>com.jpasikainen.tira/com.jpasikainen.tira.Game</mainClass>
                         </configuration>
                     </execution>
                 </executions>

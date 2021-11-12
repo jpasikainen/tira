@@ -3,16 +3,20 @@ package com.jpasikainen.tira;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class Game extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
+        // Load the graphics
         FXMLLoader fxmlLoader = new FXMLLoader(GameViewController.class.getResource("game-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 600);
-        stage.setTitle("Hello!");
+        GameViewController controller = fxmlLoader.getController();
+        controller.setScene(scene);
+        stage.setTitle("2048");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -20,8 +24,5 @@ public class HelloApplication extends Application {
 
     public static void main(String[] args) {
         launch();
-        while (true) {
-
-        }
     }
 }
