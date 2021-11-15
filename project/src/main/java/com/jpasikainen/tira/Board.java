@@ -89,16 +89,44 @@ public class Board {
     }
 
     /**
+     * Flip tiles horizontally.
+     */
+    public void flipHorizontally() {
+        for (int y = 0; y < tiles.length; y++) {
+            for (int x = 0; x < tiles.length / 2; x++) {
+                int temp = tiles[y][x];
+                tiles[y][x] = tiles[y][tiles.length - x - 1];
+                tiles[y][tiles.length - x - 1] = temp;
+            }
+        }
+    }
+
+    /**
+     * Flip tiles vertically.
+     */
+    public void flipVertically() {
+        for (int y = 0; y < tiles.length / 2; y++) {
+            for (int x = 0; x < tiles.length; x++) {
+                int temp = tiles[y][x];
+                tiles[y][x] = tiles[tiles.length - y - 1][x];
+                tiles[tiles.length - y - 1][x] = temp;
+            }
+        }
+    }
+
+    /**
      * Move the tiles.
-     * Instead of having 4 different loops,
-     * just rotate the board accordingly to align the movement.
+     * Can be simplified further.
      * @param key code of the pressed key
      */
     public void moveTiles(final KeyCode key) {
         System.out.println(key);
 
         // Move
-        if (key == KeyCode.RIGHT) {
+        if (key == KeyCode.RIGHT || key == KeyCode.LEFT) {
+            if(key == KeyCode.LEFT) {
+                flipHorizontally();
+            }
             for (int y = 0; y < tiles.length; y++) {
                 for (int x = 3; x >= 0; x--) {
                     int tile = tiles[y][x];
@@ -124,36 +152,15 @@ public class Board {
 
                 }
             }
-        }
-        if (key == KeyCode.LEFT) {
-            for (int y = 0; y < tiles.length; y++) {
-                for (int x = 0; x <= 3; x++) {
-                    int tile = tiles[y][x];
-                    // Don't move empty tiles
-                    if (tile == 0) {
-                        continue;
-                    }
-
-                    // Find the next free spot or merge
-                    int value = tiles[y][x];
-                    tiles[y][x] = 0;
-                    int newX = x - 1;
-                    while (newX >= 0 && (tiles[y][newX] == 0 || tiles[y][newX] == tile)) {
-                        // Merge
-                        if (tiles[y][newX] == tile) {
-                            value = tile * 2;
-                            newX--;
-                            break;
-                        }
-                        newX--;
-                    }
-                    tiles[y][newX + 1] = value;
-
-                }
+            if(key == KeyCode.LEFT) {
+                flipHorizontally();
             }
         }
 
-        if (key == KeyCode.DOWN) {
+        if (key == KeyCode.DOWN || key == KeyCode.UP) {
+            if (key == KeyCode.UP) {
+                flipVertically();
+            }
             for (int y = 3; y >= 0; y--) {
                 for (int x = 0; x < tiles.length; x++) {
                     int tile = tiles[y][x];
@@ -179,32 +186,8 @@ public class Board {
 
                 }
             }
-        }
-        if (key == KeyCode.UP) {
-            for (int y = 0; y <= 3; y++) {
-                for (int x = 0; x < tiles.length; x++) {
-                    int tile = tiles[y][x];
-                    // Don't move empty tiles
-                    if (tile == 0) {
-                        continue;
-                    }
-
-                    // Find the next free spot or merge
-                    int value = tiles[y][x];
-                    tiles[y][x] = 0;
-                    int newY = y - 1;
-                    while (newY >= 0 && (tiles[newY][x] == 0 || tiles[newY][x] == tile)) {
-                        // Merge
-                        if (tiles[newY][x] == tile) {
-                            value = tile * 2;
-                            newY--;
-                            break;
-                        }
-                        newY--;
-                    }
-                    tiles[newY + 1][x] = value;
-
-                }
+            if (key == KeyCode.UP) {
+                flipVertically();
             }
         }
         printBoard();
