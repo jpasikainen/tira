@@ -76,7 +76,7 @@ public class Board {
      * Get the slots that do not contain any tiles.
      * @return free slots as Pair(s) containing (y,x) coordinates.
      */
-    private ArrayList<Pair<Integer, Integer>> getFreeTiles() {
+    public ArrayList<Pair<Integer, Integer>> getFreeTiles() {
         ArrayList<Pair<Integer, Integer>> freeIntegers = new ArrayList<>();
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {

@@ -13,11 +13,13 @@ public class Game extends javafx.application.Application {
         FXMLLoader fxmlLoader = new FXMLLoader(GameViewController.class.getResource("game-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 600);
         GameViewController controller = fxmlLoader.getController();
-        controller.setScene(scene);
         stage.setTitle("2048");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
+        // Start the game loop
+        new GameLoop(controller, scene);
     }
 
     public static void main(String[] args) {

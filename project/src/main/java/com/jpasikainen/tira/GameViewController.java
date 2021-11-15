@@ -19,23 +19,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class GameViewController {
-    GameLoop gl;
-
-    @FXML
-    private VBox container;
-
     @FXML
     private TilePane board;
-
-    private Scene scene;
-    public void setScene(Scene scene) {
-        this.scene = scene;
-        getInput();
-        // Start the game loop
-        gl = new GameLoop();
-        gl.start();
-        drawTiles(gl.getTiles());
-    }
 
     @FXML
     public void initialize() {
@@ -57,10 +42,10 @@ public class GameViewController {
         }
     }
 
-    private void drawTiles(ArrayList<Integer> tiles) {
-        int index = 0;
-        for(Integer tile : tiles) {
-            StackPane group = (StackPane) board.getChildren().get(index);
+    public void drawTiles(int[] tiles) {
+        for(int i = 0; i < tiles.length; i++) {
+            int tile = tiles[i];
+            StackPane group = (StackPane) board.getChildren().get(i);
             Rectangle rect = (Rectangle) group.getChildren().get(0);
             if(tile == 0) rect.setFill(Color.DARKGRAY);
             else if(tile == 2) rect.setFill(Color.LIGHTYELLOW);
@@ -75,15 +60,8 @@ public class GameViewController {
             else if(tile == 1024) rect.setFill(Color.DARKBLUE);
             else if(tile == 2048) rect.setFill(Color.GREEN);
             Text text = (Text) group.getChildren().get(1);
-            String ts = tile == null || tile == 0 ? "" : Integer.toString(tile);
+            String ts = tile == 0 ? "" : Integer.toString(tile);
             text.setText(ts);
-            index++;
         }
-    }
-
-    private void getInput() {
-        scene.setOnKeyPressed(event -> {
-            drawTiles(gl.moveTiles(event.getCode()));
-        });
     }
 }

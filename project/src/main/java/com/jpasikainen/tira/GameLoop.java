@@ -1,40 +1,73 @@
 package com.jpasikainen.tira;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Game loop that is run every "frame". Passes data to the GUI.
  */
 public class GameLoop extends AnimationTimer {
     private long pastTick;
+    private Solver solver;
+    private GameViewController gvc;
+    private Scene scene;
     private Board board;
+    private boolean solve = false;
 
-    public GameLoop() {
-        board = new Board();
+    public GameLoop(GameViewController gvc, Scene scene) {
+        // Set the variables
+        this.gvc = gvc;
+        this.scene = scene;
+        this.board = new Board();
+
+        // Spawn the first tile
+        board.spawnRandom();
+
+        // Draw the graphics
+        draw();
+
+        // Start the solver
+        if (solve) {
+            Solver solver = new Solver(this, board);
+            this.solver = solver;
+        } else {
+            getInput();
+        }
+
+        // Start the "clock"
+        start();
+    }
+
+    public GameLoop(Board board) {
+        this.board = board;
         board.spawnRandom();
     }
 
-    private ArrayList<Integer> convertToArrayList() {
-        ArrayList<Integer> resArr = new ArrayList<>();
+    private int[] tilesToArray() {
+        int[] resArr = new int[16];
         int[][] tiles = board.getTiles();
-        for(int y = 0; y < tiles.length; y++)
-            for(int x = 0; x < tiles.length; x++)
-                resArr.add(tiles[y][x]);
+        int index = 0;
+        for(int y = 0; y < tiles.length; y++) {
+            for(int x = 0; x < tiles.length; x++) {
+                resArr[index] = tiles[y][x];
+                index++;
+            }
+        }
         return resArr;
     }
 
-    public ArrayList<Integer> getTiles() {
-        return convertToArrayList();
-    }
-
-    public ArrayList<Integer> moveTiles(KeyCode key) {
-        ArrayList<Integer> prev = getTiles();
+    public void moveTiles(KeyCode key) {
+        int[] prevBoard = tilesToArray();
         board.moveTiles(key);
-        if(!prev.equals(getTiles())) board.spawnRandom();
-        return convertToArrayList();
+
+        // Move moved tiles to some direction
+        if(!Arrays.equals(prevBoard, tilesToArray())) {
+            board.spawnRandom();
+        }
     }
 
     /**
@@ -52,6 +85,28 @@ public class GameLoop extends AnimationTimer {
      * Update loop run every frame
      * @param delta time
      */
+    private float t = 0;
     private void update(double delta) {
+        t += delta;
+        if(t >= 1) {
+            if (solve) {
+                solver.solve();
+            }
+            t = 0;
+        }
+        draw();
+    }
+
+    /**
+     * Draw the graphics.
+     */
+    private void draw() {
+        gvc.drawTiles(tilesToArray());
+    }
+
+    private void getInput() {
+        scene.setOnKeyPressed(event -> {
+            moveTiles(event.getCode());
+        });
     }
 }
