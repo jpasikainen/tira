@@ -15,23 +15,26 @@ public class GameLoop extends AnimationTimer {
     private GameViewController gvc;
     private Scene scene;
     private Board board;
-    private boolean solve = false;
+    private int[][] tiles;
+    private boolean solve = true;
 
     public GameLoop(GameViewController gvc, Scene scene) {
         // Set the variables
         this.gvc = gvc;
         this.scene = scene;
         this.board = new Board();
+        this.tiles = new int[4][4];
 
         // Spawn the first tile
-        board.spawnRandom();
+        board.spawnRandom(tiles);
 
         // Draw the graphics
         draw();
 
         // Use either the solver or keyboard input from the user
         if (solve) {
-            Solver solver = new Solver(this.board);
+            // Pass a clone of the tiles
+            Solver solver = new Solver(board, this, this.tiles);
             this.solver = solver;
         } else {
             getInput();
@@ -41,17 +44,23 @@ public class GameLoop extends AnimationTimer {
         start();
     }
 
-    public GameLoop(Board board) {
-        this.board = board;
-        board.spawnRandom();
+    public GameLoop(int[][] tiles) {
+        this.board = new Board();
+        this.tiles = tiles;
+
+        // Spawn the first tile
+        board.spawnRandom(this.tiles);
     }
 
+    /**
+     * Convert tiles to a 1D array.
+     * @return 1D array of tiles
+     */
     private int[] tilesToArray() {
         int[] resArr = new int[16];
-        int[][] tiles = board.getTiles();
         int index = 0;
-        for(int y = 0; y < tiles.length; y++) {
-            for(int x = 0; x < tiles.length; x++) {
+        for (int y = 0; y < tiles.length; y++) {
+            for (int x = 0; x < tiles.length; x++) {
                 resArr[index] = tiles[y][x];
                 index++;
             }
@@ -59,14 +68,20 @@ public class GameLoop extends AnimationTimer {
         return resArr;
     }
 
-    public void moveTiles(KeyCode key) {
+
+    public void moveTiles(KeyCode key, int[][] tiles) {
         int[] prevBoard = tilesToArray();
-        board.moveTiles(key);
+        board.moveTiles(key, tiles);
 
         // Move moved tiles to some direction
         if(!Arrays.equals(prevBoard, tilesToArray())) {
-            board.spawnRandom();
+            board.spawnRandom(tiles);
         }
+    }
+
+    public void applySolverTiles(int[][] tiles) {
+        board.spawnRandom(tiles);
+        this.tiles = tiles;
     }
 
     /**
@@ -87,7 +102,7 @@ public class GameLoop extends AnimationTimer {
     private float t = 0;
     private void update(double delta) {
         t += delta;
-        if(t >= 1) {
+        if(t >= 0.1) {
             if (solve) {
                 solver.solve();
             }
@@ -103,9 +118,12 @@ public class GameLoop extends AnimationTimer {
         gvc.drawTiles(tilesToArray());
     }
 
+    /**
+     * Get input from the player.
+     */
     private void getInput() {
         scene.setOnKeyPressed(event -> {
-            moveTiles(event.getCode());
+            moveTiles(event.getCode(), tiles);
         });
     }
 }

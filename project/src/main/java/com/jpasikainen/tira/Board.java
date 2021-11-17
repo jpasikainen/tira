@@ -8,38 +8,13 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Game board that stores the tiles and moves them.
+ * Utility class that requires tiles to be passed to every method.
  */
 public class Board {
-    /**
-     * Define the board as a 4x4 grid.
-     */
-    private int[][] tiles = new int[4][4];
-    /**
-     * Set score to zero.
-     */
-    private int score = 0;
-
-    /**
-     * Constructor.
-     */
-    public Board() {
-        Arrays.stream(tiles).forEach(tile -> Arrays.fill(tile, 0));
-        printBoard();
-    }
-
-    /**
-     * Constructor for testing.
-     */
-    public Board(final int[][] tiles) {
-        this.tiles = tiles;
-        printBoard();
-    }
-
-    /**
+     /**
      * Print the game board as 4x4 grid.
      */
-    private void printBoard() {
+    public static void printBoard(int[][] tiles) {
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
                 System.out.print(tiles[y][x]);
@@ -49,19 +24,11 @@ public class Board {
     }
 
     /**
-     * Get the tiles.
-     * @return tiles as int[4][4]
-     */
-    public int[][] getTiles() {
-        return tiles;
-    }
-
-    /**
      * Spawns a tile at a random position on the board.
      * Has either value of 2 or 4 with 10% and 90% chance respectively.
      */
-    public void spawnRandom() {
-        ArrayList<Pair<Integer, Integer>> freeIntegers = getFreeTiles();
+    public static void spawnRandom(int[][] tiles) {
+        ArrayList<Pair<Integer, Integer>> freeIntegers = getFreeTiles(tiles);
         Pair<Integer, Integer> tile = freeIntegers.get(
                 ThreadLocalRandom.current().nextInt(0, freeIntegers.size())
         );
@@ -76,7 +43,7 @@ public class Board {
      * Get the slots that do not contain any tiles.
      * @return free slots as Pair(s) containing (y,x) coordinates.
      */
-    private ArrayList<Pair<Integer, Integer>> getFreeTiles() {
+    public static ArrayList<Pair<Integer, Integer>> getFreeTiles(int[][] tiles) {
         ArrayList<Pair<Integer, Integer>> freeIntegers = new ArrayList<>();
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
@@ -91,7 +58,7 @@ public class Board {
     /**
      * Flip tiles horizontally.
      */
-    public void flipHorizontally() {
+    private static void flipHorizontally(int[][] tiles) {
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length / 2; x++) {
                 int temp = tiles[y][x];
@@ -104,7 +71,7 @@ public class Board {
     /**
      * Flip tiles vertically.
      */
-    public void flipVertically() {
+    private static void flipVertically(int[][] tiles) {
         for (int y = 0; y < tiles.length / 2; y++) {
             for (int x = 0; x < tiles.length; x++) {
                 int temp = tiles[y][x];
@@ -119,13 +86,13 @@ public class Board {
      * Can be simplified further.
      * @param key code of the pressed key
      */
-    public void moveTiles(final KeyCode key) {
+    public static void moveTiles(final KeyCode key, int[][] tiles) {
         System.out.println(key);
 
         // Move
         if (key == KeyCode.RIGHT || key == KeyCode.LEFT) {
             if(key == KeyCode.LEFT) {
-                flipHorizontally();
+                flipHorizontally(tiles);
             }
             for (int y = 0; y < tiles.length; y++) {
                 for (int x = 3; x >= 0; x--) {
@@ -153,13 +120,13 @@ public class Board {
                 }
             }
             if(key == KeyCode.LEFT) {
-                flipHorizontally();
+                flipHorizontally(tiles);
             }
         }
 
         if (key == KeyCode.DOWN || key == KeyCode.UP) {
             if (key == KeyCode.UP) {
-                flipVertically();
+                flipVertically(tiles);
             }
             for (int y = 3; y >= 0; y--) {
                 for (int x = 0; x < tiles.length; x++) {
@@ -187,9 +154,9 @@ public class Board {
                 }
             }
             if (key == KeyCode.UP) {
-                flipVertically();
+                flipVertically(tiles);
             }
         }
-        printBoard();
+        // printBoard(tiles);
     }
 }
