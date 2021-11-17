@@ -4,7 +4,6 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -30,9 +29,9 @@ public class GameLoop extends AnimationTimer {
         // Draw the graphics
         draw();
 
-        // Start the solver
+        // Use either the solver or keyboard input from the user
         if (solve) {
-            Solver solver = new Solver(this, board);
+            Solver solver = new Solver(this.board);
             this.solver = solver;
         } else {
             getInput();

@@ -1,29 +1,28 @@
 package com.jpasikainen.tira;
 
 import javafx.scene.input.KeyCode;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Solver {
-    GameLoop gl;
-    Board board;
-    Node root = new Node();
+    private Node root = new Node();
 
-    final int[][] weightedTiles = {{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//{{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0, 1, 2, 3}};
-    final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
-    
-    public Solver(GameLoop gl, Board board) {
-        this.gl = gl;
-        this.board = board;
+    private final int[][] weightedTiles = {{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//{{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0, 1, 2, 3}};
+    private final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
 
-        // Deep clone the board
-        root.board = Arrays.stream(board.getTiles()).map(int[]::clone).toArray(int[][]::new);
+    private static class Node {
+        private int[][] tiles;
+        private ArrayList<Node> children = new ArrayList<>();
+    }
+
+    public Solver(Board board) {
+        root.tiles = board.getTiles();
     }
 
     public void solve() {
-        System.out.println(expectiminimax(root, 4, false));
+        System.out.println(expectiminimax(root, 1, false));
     }
 
     /**
@@ -39,28 +38,42 @@ public class Solver {
             return heuristicValue(node);
         }
         if (!player) {
+            // Create two new tiles on each empty cell with values 2 and 4
             for (Node child : node.children) {
-                alpha += probabilityOfTileToBeChosen() * expectiminimax(child, depth - 1, true);
+                for (Pair<Integer, Integer> tile : getFreeTiles(child.tiles)) {
+                    int[][] twoTiles = child.tiles;
+                    twoTiles[tile.getKey()][tile.getValue()] = 2;
+                    Node two = new Node();
+                    two.tiles = twoTiles;
+
+                    int[][] fourTiles = child.tiles;
+                    fourTiles[tile.getKey()][tile.getValue()] = 4;
+                    Node four = new Node();
+                    four.tiles = fourTiles;
+                }
+                alpha += expectiminimax(child, depth - 1, true);
             }
         } else {
-            KeyCode bestMove = null;
-            for (KeyCode move : moves) {
-                // Make a deep clone to not affect the original board
-                Board testingBoard = new Board(Arrays.stream(node.board).map(int[]::clone).toArray(int[][]::new));
-                testingBoard.moveTiles(move);
+            for(Node childL : node.children) {
+                alpha = Math.max(alpha, expectiminimax(childL, depth - 1, false));
+                for (KeyCode move : moves) {
+                    // Move didn't change the board, ignore
+                    int[][] prevBoard = node.tiles;
+                    board.moveTiles(move);
 
-                // Move didn't change the board, ignore
-                if (Arrays.deepEquals(testingBoard.getTiles(), board.getTiles())) {
-                    continue;
-                }
+                    // Move moved tiles to some direction
+                    if (!Arrays.equals(prevBoard, tilesToArray())) {
+                        board.spawnRandom();
+                    }
 
-                // Add children to the node
-                Node child = new Node();
-                child.board = testingBoard.getTiles();
-                node.children.add(child);
+                    if (Arrays.deepEquals(testingBoard.getTiles(), board.getTiles())) {
+                        continue;
+                    }
 
-                for(Node childL : node.children) {
-                    alpha = Math.max(alpha, expectiminimax(childL, depth - 1, false));
+                    // Add children to the node
+                    Node child = new Node();
+                    child.board = testingBoard.getTiles();
+                    node.children.add(child);
                 }
             }
         }
@@ -68,37 +81,30 @@ public class Solver {
     }
 
     private float heuristicValue(Node node) {
-        int score = 0;
-        for (int y = 0; y < 4; y++) {
-            for (int x = 0; x < 4; x++) {
-                score += Math.pow(node.board[y][x], weightedTiles[y][x]);
+        // Evaluate the board's score
+        float score = 0f;
+        int[][] tiles = node.tiles;
+        for (int y = 0; y < tiles.length; y++) {
+            for (int x = 0; x < tiles.length; x++) {
+                score += Math.pow(tiles[y][x], weightedTiles[y][x]);
             }
         }
         return score;
     }
 
-    private boolean tilesEqual(int[][] a, int[][] b) {
-        for (int y = 0; y < 4; y++) {
-            for (int x = 0; x < 4; x++) {
-                if (a[y][x] != b[y][x]) {
-                    return false;
+    /**
+     * Get the slots that do not contain any tiles.
+     * @return free slots as Pair(s) containing (y,x) coordinates.
+     */
+    private ArrayList<Pair<Integer, Integer>> getFreeTiles(int[][] tiles) {
+        ArrayList<Pair<Integer, Integer>> freeIntegers = new ArrayList<>();
+        for (int y = 0; y < tiles.length; y++) {
+            for (int x = 0; x < tiles.length; x++) {
+                if (tiles[y][x] == 0) {
+                    freeIntegers.add(new Pair(y, x));
                 }
             }
         }
-        return true;
-    }
-
-    private float probabilityOfTileToBeChosen() {
-        float value = 2.0f;
-        if (ThreadLocalRandom.current().nextInt(0, 10) == 9) {
-            value = 4.0f;
-        }
-        value *= 1.0f / board.getFreeTiles().size();
-        return value;
-    }
-
-    private static class Node {
-        private int[][] board;
-        private ArrayList<Node> children = new ArrayList<>();
+        return freeIntegers;
     }
 }
