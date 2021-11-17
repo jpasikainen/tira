@@ -18,18 +18,16 @@ public class Solver {
     private final int[][] weightedTiles = {{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};
     private final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
 
-    private Board board;
     private GameLoop gl;
 
-    public Solver(Board board, GameLoop gl, int[][] tiles) {
-        this.board = board;
+    public Solver(GameLoop gl, int[][] tiles) {
         this.gl = gl;
         this.root = new Node();
         this.root.tiles = tiles;
     }
 
     public void solve() {
-        System.out.println(expectiMiniMax(this.root, 2, true));
+        System.out.println(expectiMiniMax(this.root, 2, false));
         //board.moveTiles(bestMove, this.root.tiles);
         //gl.applySolverTiles(root.tiles);
 
@@ -46,7 +44,7 @@ public class Solver {
             // Simulate moves
             for (KeyCode move : moves) {
                 int[][] simulatedTiles = Arrays.stream(node.tiles).map(int[]::clone).toArray(int[][]::new);
-                board.moveTiles(move, simulatedTiles);
+                Board.moveTiles(move, simulatedTiles);
 
                 // Board changed after the move
                 if (Arrays.deepEquals(simulatedTiles, node.tiles)) {
@@ -69,7 +67,7 @@ public class Solver {
             }
         } else {
             // Simulate all free tiles as 2s or 4s
-            for (Pair<Integer, Integer> tile : board.getFreeTiles(node.tiles)) {
+            for (Pair<Integer, Integer> tile : Board.getFreeTiles(node.tiles)) {
                 int[][] simulatedTiles = Arrays.stream(node.tiles).map(int[]::clone).toArray(int[][]::new);
 
                 // Add 2
