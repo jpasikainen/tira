@@ -22,7 +22,6 @@ public class GameLoopTests {
 
     private int emptyTiles() {
         int emptyTiles = 0;
-        int[][] tiles = new int[4][4];
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
                 if (tiles[y][x] == 0) {
@@ -40,10 +39,10 @@ public class GameLoopTests {
 
     @Test
     void testMovingAround() {
-        gl.moveTiles(KeyCode.UP, tiles);
-        gl.moveTiles(KeyCode.DOWN, tiles);
-        gl.moveTiles(KeyCode.LEFT, tiles);
-        gl.moveTiles(KeyCode.RIGHT, tiles);
+        gl.moveTiles(KeyCode.UP);
+        gl.moveTiles(KeyCode.DOWN);
+        gl.moveTiles(KeyCode.LEFT);
+        gl.moveTiles(KeyCode.RIGHT);
         assertEquals(emptyTiles() < 15, true);
     }
 }

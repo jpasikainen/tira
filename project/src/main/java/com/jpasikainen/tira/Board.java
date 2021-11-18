@@ -87,7 +87,7 @@ public class Board {
      * @param key code of the pressed key
      */
     public static void moveTiles(final KeyCode key, int[][] tiles) {
-        System.out.println(key);
+        //System.out.println(key);
 
         // Move
         if (key == KeyCode.RIGHT || key == KeyCode.LEFT) {

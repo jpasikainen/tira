@@ -66,7 +66,7 @@ public class GameLoop extends AnimationTimer {
     }
 
 
-    public void moveTiles(KeyCode key, int[][] tiles) {
+    public void moveTiles(KeyCode key) {
         int[] prevBoard = tilesToArray();
         Board.moveTiles(key, tiles);
 
@@ -120,7 +120,7 @@ public class GameLoop extends AnimationTimer {
      */
     private void getInput() {
         scene.setOnKeyPressed(event -> {
-            moveTiles(event.getCode(), tiles);
+            moveTiles(event.getCode());
         });
     }
 }

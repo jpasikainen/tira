@@ -10,12 +10,11 @@ public class Solver {
     private static class Node {
         private KeyCode move;
         private int[][] tiles;
-        private ArrayList<Node> children = new ArrayList<>();
     }
     private Node root;
     private KeyCode bestMove;
 
-    private final int[][] weightedTiles = {{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};
+    private final int[][] weightedTiles = {{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//{{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}}; //
     private final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
 
     private GameLoop gl;
@@ -27,11 +26,9 @@ public class Solver {
     }
 
     public void solve() {
-        System.out.println(expectiMiniMax(this.root, 2, false));
-        //board.moveTiles(bestMove, this.root.tiles);
-        //gl.applySolverTiles(root.tiles);
-
-        gl.moveTiles(bestMove, root.tiles);
+        System.out.println(expectiMiniMax(this.root, 4, true));
+        gl.moveTiles(bestMove);
+        System.out.println(bestMove);
         bestMove = null;
     }
 
@@ -54,11 +51,6 @@ public class Solver {
                 Node child = new Node();
                 child.tiles = simulatedTiles;
                 child.move = move;
-                node.children.add(child);
-            }
-
-            // Ascend by one
-            for (Node child : node.children) {
                 float newAlpha = expectiMiniMax(child, depth - 1, false);
                 if (newAlpha > alpha) {
                     alpha = newAlpha;
@@ -67,7 +59,8 @@ public class Solver {
             }
         } else {
             // Simulate all free tiles as 2s or 4s
-            for (Pair<Integer, Integer> tile : Board.getFreeTiles(node.tiles)) {
+            ArrayList<Pair<Integer,Integer>> freeTiles = Board.getFreeTiles(node.tiles);
+            for (Pair<Integer, Integer> tile : freeTiles) {
                 int[][] simulatedTiles = Arrays.stream(node.tiles).map(int[]::clone).toArray(int[][]::new);
 
                 // Add 2
@@ -75,20 +68,25 @@ public class Solver {
                 Node child = new Node();
                 child.move = node.move;
                 child.tiles = simulatedTiles;
-                node.children.add(child);
+
+                float newAlpha = expectiMiniMax(child, depth - 1, true);
+                if (newAlpha > 0) {
+                    alpha += newAlpha;//(newAlpha * 90) / 100;
+                    bestMove = child.move;
+                }
 
                 // Add 4
                 simulatedTiles[tile.getKey()][tile.getValue()] = 4;
                 child.tiles = simulatedTiles;
-                node.children.add(child);
-            }
 
-            // Ascend by one
-            for (Node child : node.children) {
-                alpha = Math.max(alpha, expectiMiniMax(child, depth - 1, true));
+                newAlpha = expectiMiniMax(child, depth - 1, true);
+                if (newAlpha > 0) {
+                    alpha += newAlpha;//(newAlpha * 10) / 100;
+                    bestMove = child.move;
+                }
             }
         }
-        System.out.println(alpha);
+        //System.out.println(alpha);
         return alpha;
     }
 
@@ -96,10 +94,10 @@ public class Solver {
         // Evaluate the board's score
         float score = 0f;
         int[][] tiles = node.tiles;
-        //board.moveTiles(node.move, node.tiles);
+        int freeTiles = Board.getFreeTiles(tiles).size();
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
-                score += Math.pow(tiles[y][x], weightedTiles[y][x]);
+                score += Math.pow(tiles[y][x], weightedTiles[y][x]) / freeTiles;
             }
         }
         return score;
