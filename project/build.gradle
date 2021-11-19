@@ -56,3 +56,6 @@ jacocoTestReport {
 checkstyle {
     ignoreFailures = true
 }
+
+checkstyleMain
+        .exclude('com/jpasikainen/tira/gui/*.java')

@@ -58,7 +58,7 @@
 
     <!-- Checks that a package-info.java file exists for each package.     -->
     <!-- See https://checkstyle.org/config_javadoc.html#JavadocPackage -->
-    <module name="JavadocPackage"/>
+    <!-- <module name="JavadocPackage"/> -->
 
     <!-- Checks whether files end with a new line.                        -->
     <!-- See https://checkstyle.org/config_misc.html#NewlineAtEndOfFile -->
@@ -165,7 +165,7 @@
         <module name="HiddenField"/>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
-        <module name="MagicNumber"/>
+        <!-- <module name="MagicNumber"/> -->
         <module name="MissingSwitchDefault"/>
         <module name="MultipleVariableDeclarations"/>
         <module name="SimplifyBooleanExpression"/>
@@ -182,7 +182,7 @@
         <!-- Miscellaneous other checks.                   -->
         <!-- See https://checkstyle.org/config_misc.html -->
         <module name="ArrayTypeStyle"/>
-        <module name="FinalParameters"/>
+        <!-- <module name="FinalParameters"/> -->
         <module name="TodoComment"/>
         <module name="UpperEll"/>
 
