@@ -3,6 +3,7 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.10'
     id 'jacoco'
+    id 'checkstyle'
 }
 
 group 'com.jpasikainen'
@@ -50,5 +51,8 @@ jacocoTestReport {
             fileTree(dir: it, exclude: ['com/jpasikainen/tira/gui/**', 'com/jpasikainen/tira/Game.class'])
         }))
     }
+}
 
+checkstyle {
+    ignoreFailures = true
 }
