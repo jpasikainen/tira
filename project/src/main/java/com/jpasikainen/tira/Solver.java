@@ -26,7 +26,7 @@ public class Solver {
     }
 
     public void solve() {
-        System.out.println(expectiMiniMax(this.root, 4, true));
+        System.out.println(expectiMiniMax(this.root, 3, true));
         gl.moveTiles(bestMove);
         System.out.println(bestMove);
         bestMove = null;
@@ -71,7 +71,7 @@ public class Solver {
 
                 float newAlpha = expectiMiniMax(child, depth - 1, true);
                 if (newAlpha > 0) {
-                    alpha += newAlpha;//(newAlpha * 90) / 100;
+                    alpha += (newAlpha * 90) / 100 * freeTiles.size();
                     bestMove = child.move;
                 }
 
@@ -81,7 +81,7 @@ public class Solver {
 
                 newAlpha = expectiMiniMax(child, depth - 1, true);
                 if (newAlpha > 0) {
-                    alpha += newAlpha;//(newAlpha * 10) / 100;
+                    alpha += (newAlpha * 10) / 100 * freeTiles.size();
                     bestMove = child.move;
                 }
             }
@@ -97,7 +97,7 @@ public class Solver {
         int freeTiles = Board.getFreeTiles(tiles).size();
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
-                score += Math.pow(tiles[y][x], weightedTiles[y][x]) / freeTiles;
+                score += Math.pow(tiles[y][x], weightedTiles[y][x]) * freeTiles;
             }
         }
         return score;
