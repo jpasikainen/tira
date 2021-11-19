@@ -1,5 +1,7 @@
 package com.jpasikainen.tira;
 
+import com.jpasikainen.tira.gui.GameViewController;
+import com.jpasikainen.tira.logic.GameLoop;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,6 +12,7 @@ public class Game extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
         // Load the graphics
+        System.out.println(GameViewController.class);
         FXMLLoader fxmlLoader = new FXMLLoader(GameViewController.class.getResource("game-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 600);
         GameViewController controller = fxmlLoader.getController();

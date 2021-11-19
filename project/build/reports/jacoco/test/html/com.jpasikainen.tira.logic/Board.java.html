@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tira</a> &gt; <a href="index.source.html" class="el_package">com.jpasikainen.tira.logic</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">package com.jpasikainen.tira.logic;
+
+import javafx.scene.input.KeyCode;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
+
+/**
+ * Utility class that requires tiles to be passed to every method.
+ */
+<span class="fc" id="L13">public class Board {</span>
+     /**
+     * Print the game board as 4x4 grid.
+     */
+    public static void printBoard(int[][] tiles) {
+<span class="nc bnc" id="L18" title="All 2 branches missed.">        for (int y = 0; y &lt; tiles.length; y++) {</span>
+<span class="nc bnc" id="L19" title="All 2 branches missed.">            for (int x = 0; x &lt; tiles.length; x++) {</span>
+<span class="nc" id="L20">                System.out.print(tiles[y][x]);</span>
+            }
+<span class="nc" id="L22">            System.out.println();</span>
+        }
+<span class="nc" id="L24">    }</span>
+
+    /**
+     * Spawns a tile at a random position on the board.
+     * Has either value of 2 or 4 with 10% and 90% chance respectively.
+     */
+    public static void spawnRandom(int[][] tiles) {
+<span class="fc" id="L31">        ArrayList&lt;Pair&lt;Integer, Integer&gt;&gt; freeIntegers = getFreeTiles(tiles);</span>
+<span class="fc" id="L32">        Pair&lt;Integer, Integer&gt; tile = freeIntegers.get(</span>
+<span class="fc" id="L33">                ThreadLocalRandom.current().nextInt(0, freeIntegers.size())</span>
+        );
+<span class="fc" id="L35">        int value = 2;</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        if (ThreadLocalRandom.current().nextInt(0, 10) == 9) {</span>
+<span class="nc" id="L37">            value = 4;</span>
+        }
+<span class="fc" id="L39">        tiles[tile.getKey()][tile.getValue()] = value;</span>
+<span class="fc" id="L40">    }</span>
+
+    /**
+     * Get the slots that do not contain any tiles.
+     * @return free slots as Pair(s) containing (y,x) coordinates.
+     */
+    public static ArrayList&lt;Pair&lt;Integer, Integer&gt;&gt; getFreeTiles(int[][] tiles) {
+<span class="fc" id="L47">        ArrayList&lt;Pair&lt;Integer, Integer&gt;&gt; freeIntegers = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for (int y = 0; y &lt; tiles.length; y++) {</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            for (int x = 0; x &lt; tiles.length; x++) {</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">                if (tiles[y][x] == 0) {</span>
+<span class="fc" id="L51">                    freeIntegers.add(new Pair(y, x));</span>
+                }
+            }
+        }
+<span class="fc" id="L55">        return freeIntegers;</span>
+    }
+
+    /**
+     * Flip tiles horizontally.
+     */
+    private static void flipHorizontally(int[][] tiles) {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (int y = 0; y &lt; tiles.length; y++) {</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            for (int x = 0; x &lt; tiles.length / 2; x++) {</span>
+<span class="fc" id="L64">                int temp = tiles[y][x];</span>
+<span class="fc" id="L65">                tiles[y][x] = tiles[y][tiles.length - x - 1];</span>
+<span class="fc" id="L66">                tiles[y][tiles.length - x - 1] = temp;</span>
+            }
+        }
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Flip tiles vertically.
+     */
+    private static void flipVertically(int[][] tiles) {
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (int y = 0; y &lt; tiles.length / 2; y++) {</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            for (int x = 0; x &lt; tiles.length; x++) {</span>
+<span class="fc" id="L77">                int temp = tiles[y][x];</span>
+<span class="fc" id="L78">                tiles[y][x] = tiles[tiles.length - y - 1][x];</span>
+<span class="fc" id="L79">                tiles[tiles.length - y - 1][x] = temp;</span>
+            }
+        }
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * Move the tiles.
+     * Can be simplified further.
+     * @param key code of the pressed key
+     */
+    public static void moveTiles(final KeyCode key, int[][] tiles) {
+        //System.out.println(key);
+
+        // Move
+<span class="fc bfc" id="L93" title="All 4 branches covered.">        if (key == KeyCode.RIGHT || key == KeyCode.LEFT) {</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            if(key == KeyCode.LEFT) {</span>
+<span class="fc" id="L95">                flipHorizontally(tiles);</span>
+            }
+<span class="fc bfc" id="L97" title="All 2 branches covered.">            for (int y = 0; y &lt; tiles.length; y++) {</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">                for (int x = 3; x &gt;= 0; x--) {</span>
+<span class="fc" id="L99">                    int tile = tiles[y][x];</span>
+                    // Don't move empty tiles
+<span class="fc bfc" id="L101" title="All 2 branches covered.">                    if (tile == 0) {</span>
+<span class="fc" id="L102">                        continue;</span>
+                    }
+
+                    // Find the next free spot or merge
+<span class="fc" id="L106">                    int value = tiles[y][x];</span>
+<span class="fc" id="L107">                    tiles[y][x] = 0;</span>
+<span class="fc" id="L108">                    int newX = x + 1;</span>
+<span class="pc bpc" id="L109" title="1 of 6 branches missed.">                    while (newX &lt; 4 &amp;&amp; (tiles[y][newX] == 0 || tiles[y][newX] == tile)) {</span>
+                        // Merge
+<span class="fc bfc" id="L111" title="All 2 branches covered.">                        if (tiles[y][newX] == tile) {</span>
+<span class="fc" id="L112">                            value = tile * 2;</span>
+<span class="fc" id="L113">                            newX++;</span>
+<span class="fc" id="L114">                            break;</span>
+                        }
+<span class="fc" id="L116">                        newX++;</span>
+                    }
+<span class="fc" id="L118">                    tiles[y][newX - 1] = value;</span>
+
+                }
+            }
+<span class="fc bfc" id="L122" title="All 2 branches covered.">            if(key == KeyCode.LEFT) {</span>
+<span class="fc" id="L123">                flipHorizontally(tiles);</span>
+            }
+        }
+
+<span class="fc bfc" id="L127" title="All 4 branches covered.">        if (key == KeyCode.DOWN || key == KeyCode.UP) {</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            if (key == KeyCode.UP) {</span>
+<span class="fc" id="L129">                flipVertically(tiles);</span>
+            }
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            for (int y = 3; y &gt;= 0; y--) {</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">                for (int x = 0; x &lt; tiles.length; x++) {</span>
+<span class="fc" id="L133">                    int tile = tiles[y][x];</span>
+                    // Don't move empty tiles
+<span class="fc bfc" id="L135" title="All 2 branches covered.">                    if (tile == 0) {</span>
+<span class="fc" id="L136">                        continue;</span>
+                    }
+
+                    // Find the next free spot or merge
+<span class="fc" id="L140">                    int value = tiles[y][x];</span>
+<span class="fc" id="L141">                    tiles[y][x] = 0;</span>
+<span class="fc" id="L142">                    int newY = y + 1;</span>
+<span class="pc bpc" id="L143" title="1 of 6 branches missed.">                    while (newY &lt; 4 &amp;&amp; (tiles[newY][x] == 0 || tiles[newY][x] == tile)) {</span>
+                        // Merge
+<span class="fc bfc" id="L145" title="All 2 branches covered.">                        if (tiles[newY][x] == tile) {</span>
+<span class="fc" id="L146">                            value = tile * 2;</span>
+<span class="fc" id="L147">                            newY++;</span>
+<span class="fc" id="L148">                            break;</span>
+                        }
+<span class="fc" id="L150">                        newY++;</span>
+                    }
+<span class="fc" id="L152">                    tiles[newY - 1][x] = value;</span>
+
+                }
+            }
+<span class="fc bfc" id="L156" title="All 2 branches covered.">            if (key == KeyCode.UP) {</span>
+<span class="fc" id="L157">                flipVertically(tiles);</span>
+            }
+        }
+        // printBoard(tiles);
+<span class="fc" id="L161">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

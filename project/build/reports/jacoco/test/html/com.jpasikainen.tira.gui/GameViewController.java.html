@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameViewController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tira</a> &gt; <a href="index.source.html" class="el_package">com.jpasikainen.tira.gui</a> &gt; <span class="el_source">GameViewController.java</span></div><h1>GameViewController.java</h1><pre class="source lang-java linenums">package com.jpasikainen.tira.gui;
+
+
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import java.util.ArrayList;
+
+<span class="nc" id="L21">public class GameViewController {</span>
+    @FXML
+    private TilePane board;
+
+    @FXML
+    public void initialize() {
+        // Draw the board
+<span class="nc" id="L28">        board.setPrefColumns(4);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        for(int i = 0; i &lt; 16; i++) {</span>
+<span class="nc" id="L30">            StackPane group = new StackPane();</span>
+<span class="nc" id="L31">            Rectangle rect = new Rectangle();</span>
+<span class="nc" id="L32">            rect.setHeight(100);</span>
+<span class="nc" id="L33">            rect.setWidth(100);</span>
+<span class="nc" id="L34">            rect.setStroke(Color.DARKGRAY);</span>
+<span class="nc" id="L35">            rect.setFill(Color.LIGHTGRAY);</span>
+<span class="nc" id="L36">            rect.setArcHeight(5);</span>
+<span class="nc" id="L37">            rect.setArcWidth(5);</span>
+<span class="nc" id="L38">            Text text = new Text(&quot;&quot;);</span>
+<span class="nc" id="L39">            text.setFont(Font.font(24));</span>
+<span class="nc" id="L40">            group.getChildren().addAll(rect, text);</span>
+<span class="nc" id="L41">            board.getChildren().add(group);</span>
+        }
+<span class="nc" id="L43">    }</span>
+
+    public void drawTiles(int[] tiles) {
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        for(int i = 0; i &lt; tiles.length; i++) {</span>
+<span class="nc" id="L47">            int tile = tiles[i];</span>
+<span class="nc" id="L48">            StackPane group = (StackPane) board.getChildren().get(i);</span>
+<span class="nc" id="L49">            Rectangle rect = (Rectangle) group.getChildren().get(0);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            if(tile == 0) rect.setFill(Color.DARKGRAY);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">            else if(tile == 2) rect.setFill(Color.LIGHTYELLOW);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            else if(tile == 4) rect.setFill(Color.YELLOW);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            else if(tile == 8) rect.setFill(Color.ORANGE);</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">            else if(tile == 16) rect.setFill(Color.DARKORANGE);</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">            else if(tile == 32) rect.setFill(Color.ORANGERED);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            else if(tile == 64) rect.setFill(Color.RED);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            else if(tile == 128) rect.setFill(Color.DARKRED);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            else if(tile == 256) rect.setFill(Color.MEDIUMPURPLE);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            else if(tile == 512) rect.setFill(Color.PURPLE);</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            else if(tile == 1024) rect.setFill(Color.DARKBLUE);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            else if(tile == 2048) rect.setFill(Color.GREEN);</span>
+<span class="nc" id="L62">            Text text = (Text) group.getChildren().get(1);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            String ts = tile == 0 ? &quot;&quot; : Integer.toString(tile);</span>
+<span class="nc" id="L64">            text.setText(ts);</span>
+        }
+<span class="nc" id="L66">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

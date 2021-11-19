@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.jpasikainen.tira.GameLoopTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-11-19T10:39:39" hostname="debian" time="42.596">
+  <properties/>
+  <testcase name="testMovingAround()" classname="com.jpasikainen.tira.GameLoopTests" time="42.595"/>
+  <testcase name="testInitCorrect()" classname="com.jpasikainen.tira.GameLoopTests" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

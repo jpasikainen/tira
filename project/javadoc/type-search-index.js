@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"com.jpasikainen.tira","l":"Board"},{"p":"com.jpasikainen.tira","l":"Game"},{"p":"com.jpasikainen.tira","l":"GameLoop"},{"p":"com.jpasikainen.tira","l":"GameViewController"}]

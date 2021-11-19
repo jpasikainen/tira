@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<VBox alignment="CENTER" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.jpasikainen.tira.gui.GameViewController" fx:id="container">
+    <HBox alignment="CENTER">
+        <TilePane fx:id="board" HBox.hgrow="NEVER" VBox.vgrow="NEVER" vgap="5" hgap="5"></TilePane>
+    </HBox>
+</VBox>
