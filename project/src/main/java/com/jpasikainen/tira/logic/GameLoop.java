@@ -12,13 +12,36 @@ import java.util.Arrays;
  * Game loop that is run every "frame". Passes data to the GUI.
  */
 public class GameLoop extends AnimationTimer {
+    /**
+     * How long previous tick took.
+     */
     private long pastTick;
+    /**
+     * Solver.
+     */
     private Solver solver;
+    /**
+     * GameViewController.
+     */
     private GameViewController gvc;
+    /**
+     * Scene.
+     */
     private Scene scene;
+    /**
+     * Tiles.
+     */
     private int[][] tiles;
+    /**
+     * To solve or not to solve.
+     */
     private boolean solve = true;
 
+    /**
+     * Constructor.
+     * @param gvc
+     * @param scene
+     */
     public GameLoop(GameViewController gvc, Scene scene) {
         // Set the variables
         this.gvc = gvc;
@@ -34,8 +57,7 @@ public class GameLoop extends AnimationTimer {
         // Use either the solver or keyboard input from the user
         if (solve) {
             // Pass a clone of the tiles
-            Solver solver = new Solver(this, this.tiles);
-            this.solver = solver;
+            this.solver = new Solver(this, this.tiles);
         } else {
             getInput();
         }
@@ -44,6 +66,10 @@ public class GameLoop extends AnimationTimer {
         start();
     }
 
+    /**
+     * Constructor for testing.
+     * @param tiles to test
+     */
     public GameLoop(int[][] tiles) {
         this.tiles = tiles;
 
@@ -68,23 +94,22 @@ public class GameLoop extends AnimationTimer {
     }
 
 
+    /**
+     * Moves the tiles using Board utility and spawns a new tile if the move was successful.
+     * @param key
+     */
     public void moveTiles(KeyCode key) {
         int[] prevBoard = tilesToArray();
         Board.moveTiles(key, tiles);
 
         // Move moved tiles to some direction
-        if(!Arrays.equals(prevBoard, tilesToArray())) {
+        if (!Arrays.equals(prevBoard, tilesToArray())) {
             Board.spawnRandom(tiles);
         }
     }
 
-    public void applySolverTiles(int[][] tiles) {
-        Board.spawnRandom(tiles);
-        this.tiles = tiles;
-    }
-
     /**
-     * Run each animation frame
+     * Run each animation frame.
      * @param l
      */
     @Override
@@ -95,13 +120,13 @@ public class GameLoop extends AnimationTimer {
     }
 
     /**
-     * Update loop run every frame
+     * Update loop run every frame.
      * @param delta time
      */
     private float t = 0;
     private void update(double delta) {
         t += delta;
-        if(t >= 0.1) {
+        if (t >= 0.1) {
             if (solve) {
                 solver.solve();
             }

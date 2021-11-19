@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BoardTests {
-    private final Board board = new Board();
     private int[][] tiles;
 
     @BeforeEach
@@ -28,8 +27,8 @@ public class BoardTests {
 
     @Test
     void testTilesPersistAfterMove() {
-        board.spawnRandom(tiles);
-        board.moveTiles(KeyCode.UP, tiles);
+        Board.spawnRandom(tiles);
+        Board.moveTiles(KeyCode.UP, tiles);
         int emptyTiles = 0;
         for(int y = 0; y < tiles.length; y++) {
             for(int x = 0; x < tiles.length; x++) {
@@ -42,7 +41,7 @@ public class BoardTests {
     @Test
     void testRightMove() {
         tiles[0][0] = 1;
-        board.moveTiles(KeyCode.RIGHT, tiles);
+        Board.moveTiles(KeyCode.RIGHT, tiles);
         assertEquals(tiles[0][3], 1);
     }
 
@@ -50,14 +49,14 @@ public class BoardTests {
     void testRightMoveMerge() {
         tiles[0][0] = 1;
         tiles[0][1] = 1;
-        board.moveTiles(KeyCode.RIGHT, tiles);
+        Board.moveTiles(KeyCode.RIGHT, tiles);
         assertEquals(tiles[0][3], 2);
     }
 
     @Test
     void testLeftMove() {
         tiles[0][3] = 1;
-        board.moveTiles(KeyCode.LEFT, tiles);
+        Board.moveTiles(KeyCode.LEFT, tiles);
         assertEquals(tiles[0][0], 1);
     }
 
@@ -65,14 +64,14 @@ public class BoardTests {
     void testLeftMoveMerge() {
         tiles[0][3] = 1;
         tiles[0][2] = 1;
-        board.moveTiles(KeyCode.LEFT, tiles);
+        Board.moveTiles(KeyCode.LEFT, tiles);
         assertEquals(tiles[0][0], 2);
     }
 
     @Test
     void testUpMove() {
         tiles[3][0] = 1;
-        board.moveTiles(KeyCode.UP, tiles);
+        Board.moveTiles(KeyCode.UP, tiles);
         assertEquals(tiles[0][0], 1);
     }
 
@@ -80,14 +79,14 @@ public class BoardTests {
     void testUpMoveMerge() {
         tiles[3][0] = 1;
         tiles[2][0] = 1;
-        board.moveTiles(KeyCode.UP, tiles);
+        Board.moveTiles(KeyCode.UP, tiles);
         assertEquals(tiles[0][0], 2);
     }
 
     @Test
     void testDownMove() {
         tiles[0][0] = 1;
-        board.moveTiles(KeyCode.DOWN, tiles);
+        Board.moveTiles(KeyCode.DOWN, tiles);
         assertEquals(tiles[3][0], 1);
     }
 
@@ -95,7 +94,7 @@ public class BoardTests {
     void testDownMoveMerge() {
         tiles[0][0] = 1;
         tiles[1][0] = 1;
-        board.moveTiles(KeyCode.DOWN, tiles);
+        Board.moveTiles(KeyCode.DOWN, tiles);
         assertEquals(tiles[3][0], 2);
     }
 }

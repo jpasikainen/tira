@@ -4,15 +4,22 @@ import javafx.scene.input.KeyCode;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Utility class that requires tiles to be passed to every method.
  */
-public class Board {
+public final class Board {
+    /**
+     * Private constructor to prevent misusage.
+     */
+    private Board() {
+
+    }
+
      /**
      * Print the game board as 4x4 grid.
+      * @param tiles tiles
      */
     public static void printBoard(int[][] tiles) {
         for (int y = 0; y < tiles.length; y++) {
@@ -26,6 +33,7 @@ public class Board {
     /**
      * Spawns a tile at a random position on the board.
      * Has either value of 2 or 4 with 10% and 90% chance respectively.
+     * @param tiles tiles
      */
     public static void spawnRandom(int[][] tiles) {
         ArrayList<Pair<Integer, Integer>> freeIntegers = getFreeTiles(tiles);
@@ -41,6 +49,7 @@ public class Board {
 
     /**
      * Get the slots that do not contain any tiles.
+     * @param tiles tiles
      * @return free slots as Pair(s) containing (y,x) coordinates.
      */
     public static ArrayList<Pair<Integer, Integer>> getFreeTiles(int[][] tiles) {
@@ -57,6 +66,7 @@ public class Board {
 
     /**
      * Flip tiles horizontally.
+     * @param tiles tiles
      */
     private static void flipHorizontally(int[][] tiles) {
         for (int y = 0; y < tiles.length; y++) {
@@ -70,6 +80,7 @@ public class Board {
 
     /**
      * Flip tiles vertically.
+     * @param tiles tiles
      */
     private static void flipVertically(int[][] tiles) {
         for (int y = 0; y < tiles.length / 2; y++) {
@@ -85,13 +96,14 @@ public class Board {
      * Move the tiles.
      * Can be simplified further.
      * @param key code of the pressed key
+     * @param tiles tiles
      */
     public static void moveTiles(final KeyCode key, int[][] tiles) {
         //System.out.println(key);
 
         // Move
         if (key == KeyCode.RIGHT || key == KeyCode.LEFT) {
-            if(key == KeyCode.LEFT) {
+            if (key == KeyCode.LEFT) {
                 flipHorizontally(tiles);
             }
             for (int y = 0; y < tiles.length; y++) {
@@ -119,7 +131,7 @@ public class Board {
 
                 }
             }
-            if(key == KeyCode.LEFT) {
+            if (key == KeyCode.LEFT) {
                 flipHorizontally(tiles);
             }
         }
@@ -157,6 +169,5 @@ public class Board {
                 flipVertically(tiles);
             }
         }
-        // printBoard(tiles);
     }
 }

@@ -2,14 +2,12 @@ package com.jpasikainen.tira;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.jpasikainen.tira.logic.Board;
 import com.jpasikainen.tira.logic.GameLoop;
 import javafx.scene.input.KeyCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GameLoopTests {
-    private Board board;
     private int[][] tiles;
     private GameLoop gl;
 
@@ -17,7 +15,6 @@ public class GameLoopTests {
     public void init() {
         tiles = new int[4][4];
         this.gl = new GameLoop(tiles);
-        this.board = new Board();
     }
 
     private int emptyTiles() {

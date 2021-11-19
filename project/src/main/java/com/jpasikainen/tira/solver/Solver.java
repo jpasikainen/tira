@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Solver {
+    /**
+     *
+     */
     private static class Node {
         private KeyCode move;
         private int[][] tiles;

@@ -39,6 +39,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
 
+// Tasks
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport // report is always generated after tests run
@@ -55,7 +56,7 @@ jacocoTestReport {
 
 checkstyle {
     ignoreFailures = true
+    checkstyleMain.source = "src"
+    checkstyleMain.exclude('main/java/com/jpasikainen/tira/gui/*.java')
+    checkstyleMain.exclude('test/java/com/jpasikainen/tira/*.java')
 }
-
-checkstyleMain
-        .exclude('com/jpasikainen/tira/gui/*.java')

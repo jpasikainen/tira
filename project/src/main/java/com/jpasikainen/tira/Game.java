@@ -9,9 +9,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Game extends javafx.application.Application {
+    /**
+     * Starts the application by first setting up graphics and then launching the game loop.
+     * @param stage stage
+     * @throws IOException Exception
+     */
     @Override
     public void start(Stage stage) throws IOException {
-        // Load the graphics
+        // Setup the graphics
         System.out.println(GameViewController.class);
         FXMLLoader fxmlLoader = new FXMLLoader(GameViewController.class.getResource("game-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 600);
@@ -25,6 +30,10 @@ public class Game extends javafx.application.Application {
         new GameLoop(controller, scene);
     }
 
+    /**
+     * Launches the application.
+     * @param args args
+     */
     public static void main(String[] args) {
         launch();
     }
