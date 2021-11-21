@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Game extends javafx.application.Application {
+    private static int depth = -1;
+
     /**
      * Starts the application by first setting up graphics and then launching the game loop.
      * @param stage stage
@@ -27,7 +29,7 @@ public class Game extends javafx.application.Application {
         stage.show();
 
         // Start the game loop
-        new GameLoop(controller, scene);
+        new GameLoop(controller, scene, depth);
     }
 
     /**
@@ -35,6 +37,11 @@ public class Game extends javafx.application.Application {
      * @param args args
      */
     public static void main(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("--depth") && i + 1 <= args.length - 1) {
+                depth = Integer.valueOf(args[i+1]);
+            }
+        }
         launch();
     }
 }

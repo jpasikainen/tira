@@ -12,6 +12,7 @@
 <VBox alignment="CENTER" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.jpasikainen.tira.gui.GameViewController" fx:id="container">
     <HBox alignment="CENTER">
-        <TilePane fx:id="board" HBox.hgrow="NEVER" VBox.vgrow="NEVER" vgap="5" hgap="5"></TilePane>
+        <TilePane fx:id="board" HBox.hgrow="NEVER" VBox.vgrow="NEVER" vgap="5" hgap="5"
+                  style="-fx-background-color: darkgray; -fx-padding: 5;"/>
     </HBox>
 </VBox>

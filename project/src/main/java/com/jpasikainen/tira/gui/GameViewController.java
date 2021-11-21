@@ -1,22 +1,12 @@
 package com.jpasikainen.tira.gui;
 
-
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
-import java.util.ArrayList;
 
 public class GameViewController {
     @FXML
@@ -47,18 +37,18 @@ public class GameViewController {
             int tile = tiles[i];
             StackPane group = (StackPane) board.getChildren().get(i);
             Rectangle rect = (Rectangle) group.getChildren().get(0);
-            if(tile == 0) rect.setFill(Color.DARKGRAY);
-            else if(tile == 2) rect.setFill(Color.LIGHTYELLOW);
-            else if(tile == 4) rect.setFill(Color.YELLOW);
-            else if(tile == 8) rect.setFill(Color.ORANGE);
-            else if(tile == 16) rect.setFill(Color.DARKORANGE);
-            else if(tile == 32) rect.setFill(Color.ORANGERED);
-            else if(tile == 64) rect.setFill(Color.RED);
-            else if(tile == 128) rect.setFill(Color.DARKRED);
-            else if(tile == 256) rect.setFill(Color.MEDIUMPURPLE);
-            else if(tile == 512) rect.setFill(Color.PURPLE);
-            else if(tile == 1024) rect.setFill(Color.DARKBLUE);
-            else if(tile == 2048) rect.setFill(Color.GREEN);
+            if(tile == 0) rect.setFill(Color.LIGHTGRAY);
+            else if(tile == 2) rect.setFill(Color.web("#eee4da"));
+            else if(tile == 4) rect.setFill(Color.web("#ede0c8"));
+            else if(tile == 8) rect.setFill(Color.web("#f2b179"));
+            else if(tile == 16) rect.setFill(Color.web("#f59563"));
+            else if(tile == 32) rect.setFill(Color.web("#f67c5f"));
+            else if(tile == 64) rect.setFill(Color.web("#f65e3b"));
+            else if(tile == 128) rect.setFill(Color.web("#edcf72"));
+            else if(tile == 256) rect.setFill(Color.web("#edcc61"));
+            else if(tile == 512) rect.setFill(Color.web("#edc850"));
+            else if(tile == 1024) rect.setFill(Color.web("#edc53f"));
+            else if(tile == 2048) rect.setFill(Color.web("#edc22e"));
             Text text = (Text) group.getChildren().get(1);
             String ts = tile == 0 ? "" : Integer.toString(tile);
             text.setText(ts);

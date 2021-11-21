@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 public class Solver {
 
-    private final int[][] weightedTiles = {{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}}; //{{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//
-    private final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
+    private static final int[][] weightedTiles = {{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}}; //{{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//
+    private static final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
 
     private GameLoop gl;
 
@@ -24,14 +24,12 @@ public class Solver {
      * @param tiles is the board to solve
      * @return true if there was something to solve, otherwise false
      */
-    public boolean solve(int[][] tiles) {
-        Pair<Double, KeyCode> res = expectiMiniMax(tiles, null, 6, true);
-        System.out.println(res.getKey());
-        gl.moveTiles(res.getValue());
-        return res.getKey() > 0.0;
+    public static KeyCode solve(int[][] tiles, int depth) {
+        Pair<Double, KeyCode> res = expectiMiniMax(tiles, null, depth, true);
+        return res.getValue();
     }
 
-    private Pair<Double, KeyCode> expectiMiniMax(int[][] tiles, KeyCode key, int depth, boolean playerTurn) {
+    private static Pair<Double, KeyCode> expectiMiniMax(int[][] tiles, KeyCode key, int depth, boolean playerTurn) {
         double alpha = 0;
         if (depth == 0) {
             return new Pair(heuristicValue(tiles), key);
@@ -77,7 +75,7 @@ public class Solver {
         return new Pair(alpha, key);
     }
 
-    private double heuristicValue(int[][] tiles) {
+    private static double heuristicValue(int[][] tiles) {
         // Evaluate the board's score
         double score = 0;
         int freeTiles = Board.getFreeTiles(tiles).size();

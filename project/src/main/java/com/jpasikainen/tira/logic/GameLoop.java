@@ -12,15 +12,12 @@ import java.util.Arrays;
  * Game loop that is run every "frame". Passes data to the GUI.
  */
 public class GameLoop extends AnimationTimer {
+    private int score = 0;
     private boolean gameIsRunning = true;
     /**
      * How long previous tick took.
      */
     private long pastTick;
-    /**
-     * Solver.
-     */
-    private Solver solver;
     /**
      * GameViewController.
      */
@@ -36,17 +33,19 @@ public class GameLoop extends AnimationTimer {
     /**
      * To solve or not to solve.
      */
-    private boolean solve = true;
+    private boolean solve;
+    private int depth = 1;
 
     /**
      * Constructor.
      * @param gvc
      * @param scene
      */
-    public GameLoop(GameViewController gvc, Scene scene) {
+    public GameLoop(GameViewController gvc, Scene scene, int depth) {
         // Set the variables
         this.gvc = gvc;
         this.scene = scene;
+        this.depth = depth;
         this.tiles = new int[4][4];
 
         // Draw the graphics
@@ -56,9 +55,9 @@ public class GameLoop extends AnimationTimer {
         Board.spawnRandom(tiles);
 
         // Use either the solver or keyboard input from the user
-        if (solve) {
+        if (this.depth >= 0) {
             // Pass a clone of the tiles
-            this.solver = new Solver(this);
+            solve = true;
         } else {
             getInput();
         }
@@ -133,9 +132,11 @@ public class GameLoop extends AnimationTimer {
         t += delta;
         if (t >= 0.1) {
             if (solve) {
-                if (!solver.solve(this.tiles)) {
+                KeyCode bestMove = Solver.solve(this.tiles, depth);
+                if (bestMove == null) {
                     gameIsRunning = false;
                 }
+                moveTiles(bestMove);
             }
             t = 0;
         }
