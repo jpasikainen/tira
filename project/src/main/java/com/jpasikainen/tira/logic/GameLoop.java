@@ -103,7 +103,7 @@ public class GameLoop extends AnimationTimer {
         Board.moveTiles(key, tiles);
 
         // Move moved tiles to some direction
-        if (!Arrays.equals(prevBoard, tilesToArray())) {
+        if (!Arrays.equals(prevBoard, tilesToArray()) || Board.getFreeTiles(tiles).size() == 1) {
             Board.spawnRandom(tiles);
         }
     }
