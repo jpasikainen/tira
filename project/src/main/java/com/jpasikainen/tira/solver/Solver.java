@@ -31,7 +31,7 @@ public class Solver {
     }
 
     public void solve() {
-        System.out.println(expectiMiniMax(this.root, 3, true));
+        System.out.println(expectiMiniMax(this.root, 2, true));
         gl.moveTiles(bestMove);
         System.out.println(bestMove);
         bestMove = null;
@@ -59,7 +59,7 @@ public class Solver {
                 float newAlpha = expectiMiniMax(child, depth - 1, false);
                 if (newAlpha > alpha) {
                     alpha = newAlpha;
-                    bestMove = child.move;
+                    bestMove = child.move; // child.move or node.move?
                 }
             }
         } else {
@@ -70,28 +70,31 @@ public class Solver {
 
                 // Add 2
                 simulatedTiles[tile.getKey()][tile.getValue()] = 2;
-                Node child = new Node();
-                child.move = node.move;
-                child.tiles = simulatedTiles;
+                Node child2 = new Node();
+                child2.move = node.move;
+                child2.tiles = simulatedTiles;
 
-                float newAlpha = expectiMiniMax(child, depth - 1, true);
+                float newAlpha = expectiMiniMax(child2, depth - 1, true);
                 if (newAlpha > 0) {
-                    alpha += (newAlpha * 90) / 100 * freeTiles.size();
-                    bestMove = child.move;
+                    alpha += (newAlpha * 90) / 100 * (freeTiles.size() - 1);
                 }
 
                 // Add 4
+                simulatedTiles = Arrays.stream(node.tiles).map(int[]::clone).toArray(int[][]::new);
                 simulatedTiles[tile.getKey()][tile.getValue()] = 4;
-                child.tiles = simulatedTiles;
+                Node child4 = new Node();
+                child4.move = node.move;
+                child4.tiles = simulatedTiles;
 
-                newAlpha = expectiMiniMax(child, depth - 1, true);
+                newAlpha = expectiMiniMax(child4, depth - 1, true);
                 if (newAlpha > 0) {
-                    alpha += (newAlpha * 10) / 100 * freeTiles.size();
-                    bestMove = child.move;
+                    alpha += (newAlpha * 10) / 100 * (freeTiles.size() - 1);
                 }
             }
         }
         //System.out.println(alpha);
+        Board.printBoard(node.tiles);
+        System.out.println("--------");
         return alpha;
     }
 
@@ -102,7 +105,7 @@ public class Solver {
         int freeTiles = Board.getFreeTiles(tiles).size();
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
-                score += Math.pow(tiles[y][x], weightedTiles[y][x]) * freeTiles;
+                score += tiles[y][x] * weightedTiles[y][x] * freeTiles;
             }
         }
         return score;
