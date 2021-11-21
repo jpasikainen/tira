@@ -12,6 +12,7 @@ import java.util.Arrays;
  * Game loop that is run every "frame". Passes data to the GUI.
  */
 public class GameLoop extends AnimationTimer {
+    private boolean gameIsRunning = true;
     /**
      * How long previous tick took.
      */
@@ -57,7 +58,7 @@ public class GameLoop extends AnimationTimer {
         // Use either the solver or keyboard input from the user
         if (solve) {
             // Pass a clone of the tiles
-            this.solver = new Solver(this, this.tiles);
+            this.solver = new Solver(this);
         } else {
             getInput();
         }
@@ -114,6 +115,10 @@ public class GameLoop extends AnimationTimer {
      */
     @Override
     public void handle(long l) {
+        if (!gameIsRunning) {
+            return;
+        }
+
         double delta = ((l - pastTick) / 1e9);
         update(delta);
         pastTick = l;
@@ -128,7 +133,9 @@ public class GameLoop extends AnimationTimer {
         t += delta;
         if (t >= 0.1) {
             if (solve) {
-                solver.solve();
+                if (!solver.solve(this.tiles)) {
+                    gameIsRunning = false;
+                }
             }
             t = 0;
         }
