@@ -9,103 +9,81 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Solver {
-    /**
-     *
-     */
-    private static class Node {
-        private KeyCode move;
-        private int[][] tiles;
-    }
-    private Node root;
-    private KeyCode bestMove;
 
-    private final int[][] weightedTiles = {{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//{{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}}; //
+    private final int[][] weightedTiles = {{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}}; //{{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//
     private final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
 
     private GameLoop gl;
 
-    public Solver(GameLoop gl, int[][] tiles) {
+    public Solver(GameLoop gl) {
         this.gl = gl;
-        this.root = new Node();
-        this.root.tiles = tiles;
     }
 
-    public void solve() {
-        System.out.println(expectiMiniMax(this.root, 2, true));
-        gl.moveTiles(bestMove);
-        System.out.println(bestMove);
-        bestMove = null;
+    /**
+     * Solve the given board.
+     * @param tiles is the board to solve
+     * @return true if there was something to solve, otherwise false
+     */
+    public boolean solve(int[][] tiles) {
+        Pair<Double, KeyCode> res = expectiMiniMax(tiles, null, 6, true);
+        System.out.println(res.getKey());
+        gl.moveTiles(res.getValue());
+        return res.getKey() > 0.0;
     }
 
-    private float expectiMiniMax(Node node, int depth, boolean playerTurn) {
-        float alpha = 0;
+    private Pair<Double, KeyCode> expectiMiniMax(int[][] tiles, KeyCode key, int depth, boolean playerTurn) {
+        double alpha = 0;
         if (depth == 0) {
-            return heuristicValue(node);
+            return new Pair(heuristicValue(tiles), key);
         }
         if (playerTurn) {
             // Simulate moves
             for (KeyCode move : moves) {
-                int[][] simulatedTiles = Arrays.stream(node.tiles).map(int[]::clone).toArray(int[][]::new);
+                int[][] simulatedTiles = Arrays.stream(tiles).map(int[]::clone).toArray(int[][]::new);
                 Board.moveTiles(move, simulatedTiles);
 
                 // Board changed after the move
-                if (Arrays.deepEquals(simulatedTiles, node.tiles)) {
+                if (Arrays.deepEquals(simulatedTiles, tiles)) {
                     continue;
                 }
 
-                Node child = new Node();
-                child.tiles = simulatedTiles;
-                child.move = move;
-                float newAlpha = expectiMiniMax(child, depth - 1, false);
+                Pair<Double, KeyCode> res = expectiMiniMax(simulatedTiles, move, depth - 1, false);
+                double newAlpha = res.getKey();
                 if (newAlpha > alpha) {
                     alpha = newAlpha;
-                    bestMove = child.move; // child.move or node.move?
+                    key = res.getValue();
                 }
             }
         } else {
             // Simulate all free tiles as 2s or 4s
-            ArrayList<Pair<Integer,Integer>> freeTiles = Board.getFreeTiles(node.tiles);
+            ArrayList<Pair<Integer,Integer>> freeTiles = Board.getFreeTiles(tiles);
             for (Pair<Integer, Integer> tile : freeTiles) {
-                int[][] simulatedTiles = Arrays.stream(node.tiles).map(int[]::clone).toArray(int[][]::new);
-
                 // Add 2
+                int[][] simulatedTiles = Arrays.stream(tiles).map(int[]::clone).toArray(int[][]::new);
                 simulatedTiles[tile.getKey()][tile.getValue()] = 2;
-                Node child2 = new Node();
-                child2.move = node.move;
-                child2.tiles = simulatedTiles;
-
-                float newAlpha = expectiMiniMax(child2, depth - 1, true);
-                if (newAlpha > 0) {
-                    alpha += (newAlpha * 90) / 100 * (freeTiles.size() - 1);
-                }
+                alpha += 0.9 * expectiMiniMax(simulatedTiles, key, depth - 1, true).getKey();
 
                 // Add 4
-                simulatedTiles = Arrays.stream(node.tiles).map(int[]::clone).toArray(int[][]::new);
+                simulatedTiles = Arrays.stream(tiles).map(int[]::clone).toArray(int[][]::new);
                 simulatedTiles[tile.getKey()][tile.getValue()] = 4;
-                Node child4 = new Node();
-                child4.move = node.move;
-                child4.tiles = simulatedTiles;
-
-                newAlpha = expectiMiniMax(child4, depth - 1, true);
-                if (newAlpha > 0) {
-                    alpha += (newAlpha * 10) / 100 * (freeTiles.size() - 1);
-                }
+                alpha += 0.1 * expectiMiniMax(simulatedTiles, key, depth - 1, true).getKey();
             }
+            //alpha /= freeTiles.size();
         }
         //System.out.println(alpha);
-        Board.printBoard(node.tiles);
-        System.out.println("--------");
-        return alpha;
+        //Board.printBoard(node.tiles);
+        //System.out.println("--------");
+        //System.out.println(key);
+        return new Pair(alpha, key);
     }
 
-    private float heuristicValue(Node node) {
+    private double heuristicValue(int[][] tiles) {
         // Evaluate the board's score
-        float score = 0f;
-        int[][] tiles = node.tiles;
+        double score = 0;
         int freeTiles = Board.getFreeTiles(tiles).size();
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
-                score += tiles[y][x] * weightedTiles[y][x] * freeTiles;
+                score += tiles[y][x] * weightedTiles[y][x] * freeTiles;//Math.pow(tiles[y][x], weightedTiles[y][x]) * freeTiles;
             }
         }
         return score;
