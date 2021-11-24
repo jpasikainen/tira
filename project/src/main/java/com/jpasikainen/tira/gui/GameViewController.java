@@ -13,6 +13,12 @@ public class GameViewController {
     private TilePane board;
 
     @FXML
+    private Text moveTime;
+
+    @FXML
+    private Text scoreText;
+
+    @FXML
     public void initialize() {
         // Draw the board
         board.setPrefColumns(4);
@@ -53,5 +59,19 @@ public class GameViewController {
             String ts = tile == 0 ? "" : Integer.toString(tile);
             text.setText(ts);
         }
+    }
+
+    /**
+     * Update the time text on the GUI.
+     * @param time ms
+     */
+    public void updateMoveTime(float time) {
+        String timeText = String.format("Move took %.0f ms", time);
+        moveTime.setText(timeText);
+    }
+
+    public void updateScoreText(int score) {
+        String scoreString = String.format("Score: %d", score);
+        scoreText.setText(scoreString);
     }
 }

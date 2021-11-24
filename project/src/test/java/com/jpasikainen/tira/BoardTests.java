@@ -1,7 +1,7 @@
 package com.jpasikainen.tira;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import com.jpasikainen.tira.logic.Board;
+import com.jpasikainen.tira.util.Board;
 import javafx.scene.input.KeyCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -9,7 +9,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Game extends javafx.application.Application {
-    private static int depth = -1;
+    /**
+     * Define the depth for the solver algorithm.
+     */
+    private static int depth = 0;
 
     /**
      * Starts the application by first setting up graphics and then launching the game loop.
@@ -18,7 +21,7 @@ public class Game extends javafx.application.Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        // Setup the graphics
+        // Set up the graphics
         System.out.println(GameViewController.class);
         FXMLLoader fxmlLoader = new FXMLLoader(GameViewController.class.getResource("game-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 600);
@@ -34,12 +37,12 @@ public class Game extends javafx.application.Application {
 
     /**
      * Launches the application.
-     * @param args args
+     * @param args --depth <positive integer>
      */
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("--depth") && i + 1 <= args.length - 1) {
-                depth = Integer.valueOf(args[i+1]);
+                depth = Integer.parseInt(args[i+1]);
             }
         }
         launch();

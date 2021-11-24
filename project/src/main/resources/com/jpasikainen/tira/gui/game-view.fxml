@@ -11,6 +11,8 @@
 <?import javafx.geometry.Insets?>
 <VBox alignment="CENTER" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.jpasikainen.tira.gui.GameViewController" fx:id="container">
+    <Text textAlignment="CENTER" fx:id="scoreText" style="-fx-font-size: 24">Score: 0</Text>
+    <Text textAlignment="CENTER" fx:id="moveTime" style="-fx-font-size: 24"></Text>
     <HBox alignment="CENTER">
         <TilePane fx:id="board" HBox.hgrow="NEVER" VBox.vgrow="NEVER" vgap="5" hgap="5"
                   style="-fx-background-color: darkgray; -fx-padding: 5;"/>

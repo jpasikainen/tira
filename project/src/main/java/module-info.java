@@ -9,6 +9,6 @@ module com.jpasikainen.tira {
     opens com.jpasikainen.tira.logic to javafx.fxml;
     exports com.jpasikainen.tira.gui;
     opens com.jpasikainen.tira.gui to javafx.fxml;
-    exports com.jpasikainen.tira.solver;
-    opens com.jpasikainen.tira.solver to javafx.fxml;
+    exports com.jpasikainen.tira.util;
+    opens com.jpasikainen.tira.util to javafx.fxml;
 }

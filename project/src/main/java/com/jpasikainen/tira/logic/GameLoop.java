@@ -1,7 +1,8 @@
 package com.jpasikainen.tira.logic;
 
 import com.jpasikainen.tira.gui.GameViewController;
-import com.jpasikainen.tira.solver.Solver;
+import com.jpasikainen.tira.util.Board;
+import com.jpasikainen.tira.util.Solver;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -12,7 +13,10 @@ import java.util.Arrays;
  * Game loop that is run every "frame". Passes data to the GUI.
  */
 public class GameLoop extends AnimationTimer {
-    private int score = 0;
+    static int score = 0;
+    /**
+     * Defines does the game accept tile movement.
+     */
     private boolean gameIsRunning = true;
     /**
      * How long previous tick took.
@@ -34,11 +38,14 @@ public class GameLoop extends AnimationTimer {
      * To solve or not to solve.
      */
     private boolean solve;
+    /**
+     * The level of depth that the algorithm will reach.
+     */
     private int depth = 1;
 
     /**
      * Constructor.
-     * @param gvc
+     * @param gvc GameViewController where the graphics live.
      * @param scene
      */
     public GameLoop(GameViewController gvc, Scene scene, int depth) {
@@ -55,8 +62,7 @@ public class GameLoop extends AnimationTimer {
         Board.spawnRandom(tiles);
 
         // Use either the solver or keyboard input from the user
-        if (this.depth >= 0) {
-            // Pass a clone of the tiles
+        if (this.depth > 0) {
             solve = true;
         } else {
             getInput();
@@ -100,7 +106,8 @@ public class GameLoop extends AnimationTimer {
      */
     public void moveTiles(KeyCode key) {
         int[] prevBoard = tilesToArray();
-        Board.moveTiles(key, tiles);
+        score += Board.moveTiles(key, tiles);
+        gvc.updateScoreText(score);
 
         // Move moved tiles to some direction
         if (!Arrays.equals(prevBoard, tilesToArray()) || Board.getFreeTiles(tiles).size() == 1) {
@@ -124,15 +131,20 @@ public class GameLoop extends AnimationTimer {
     }
 
     /**
+     * Timer.
+     */
+    private float t = 0;
+    /**
      * Update loop run every frame.
      * @param delta time
      */
-    private float t = 0;
     private void update(double delta) {
         t += delta;
-        if (t >= 0.1) {
+        if (t >= 0.05) {
             if (solve) {
+                long startTime = System.currentTimeMillis();
                 KeyCode bestMove = Solver.solve(this.tiles, depth);
+                gvc.updateMoveTime(System.currentTimeMillis() - startTime);
                 if (bestMove == null) {
                     gameIsRunning = false;
                 }

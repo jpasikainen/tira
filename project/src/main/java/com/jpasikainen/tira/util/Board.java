@@ -1,7 +1,6 @@
-package com.jpasikainen.tira.logic;
+package com.jpasikainen.tira.util;
 
 import javafx.scene.input.KeyCode;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -14,7 +13,6 @@ public final class Board {
      * Private constructor to prevent misusage.
      */
     private Board() {
-
     }
 
      /**
@@ -36,15 +34,15 @@ public final class Board {
      * @param tiles tiles
      */
     public static void spawnRandom(int[][] tiles) {
-        ArrayList<Pair<Integer, Integer>> freeIntegers = getFreeTiles(tiles);
-        Pair<Integer, Integer> tile = freeIntegers.get(
+        ArrayList<int[]> freeIntegers = getFreeTiles(tiles);
+        int[] tile = freeIntegers.get(
                 ThreadLocalRandom.current().nextInt(0, freeIntegers.size())
         );
         int value = 2;
         if (ThreadLocalRandom.current().nextInt(0, 10) == 9) {
             value = 4;
         }
-        tiles[tile.getKey()][tile.getValue()] = value;
+        tiles[tile[0]][tile[1]] = value;
     }
 
     /**
@@ -52,12 +50,12 @@ public final class Board {
      * @param tiles tiles
      * @return free slots as Pair(s) containing (y,x) coordinates.
      */
-    public static ArrayList<Pair<Integer, Integer>> getFreeTiles(int[][] tiles) {
-        ArrayList<Pair<Integer, Integer>> freeIntegers = new ArrayList<>();
+    public static ArrayList<int[]> getFreeTiles(int[][] tiles) {
+        ArrayList<int[]> freeIntegers = new ArrayList<>();
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
                 if (tiles[y][x] == 0) {
-                    freeIntegers.add(new Pair(y, x));
+                    freeIntegers.add(new int[]{y, x});
                 }
             }
         }
@@ -98,8 +96,9 @@ public final class Board {
      * @param key code of the pressed key
      * @param tiles tiles
      */
-    public static void moveTiles(final KeyCode key, int[][] tiles) {
+    public static int moveTiles(final KeyCode key, int[][] tiles) {
         //System.out.println(key);
+        int mergeScore = 0;
 
         // Move
         if (key == KeyCode.RIGHT || key == KeyCode.LEFT) {
@@ -121,6 +120,7 @@ public final class Board {
                     while (newX < 4 && (tiles[y][newX] == 0 || tiles[y][newX] == tile)) {
                         // Merge
                         if (tiles[y][newX] == tile) {
+                            mergeScore += value;
                             value = tile * 2;
                             newX++;
                             break;
@@ -155,6 +155,7 @@ public final class Board {
                     while (newY < 4 && (tiles[newY][x] == 0 || tiles[newY][x] == tile)) {
                         // Merge
                         if (tiles[newY][x] == tile) {
+                            mergeScore += value;
                             value = tile * 2;
                             newY++;
                             break;
@@ -169,5 +170,7 @@ public final class Board {
                 flipVertically(tiles);
             }
         }
+
+        return mergeScore;
     }
 }
