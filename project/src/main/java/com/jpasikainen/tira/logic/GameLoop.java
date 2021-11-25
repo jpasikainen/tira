@@ -13,7 +13,7 @@ import java.util.Arrays;
  * Game loop that is run every "frame". Passes data to the GUI.
  */
 public class GameLoop extends AnimationTimer {
-    static int score = 0;
+    private static int score = 0;
     /**
      * Defines does the game accept tile movement.
      */
@@ -112,7 +112,9 @@ public class GameLoop extends AnimationTimer {
     public void moveTiles(KeyCode key) {
         int[] prevBoard = tilesToArray();
         score += Board.moveTiles(key, tiles);
-        gvc.updateScoreText(score);
+        if (gvc != null) {
+            gvc.updateScoreText(score);
+        }
 
         // Move moved tiles to some direction
         if (!Arrays.equals(prevBoard, tilesToArray()) || Board.getFreeTiles(tiles).size() == 1) {
@@ -163,6 +165,20 @@ public class GameLoop extends AnimationTimer {
         this.tiles = new int[4][4];
         this.score = 0;
         Board.spawnRandom(this.tiles);
+    }
+
+    /**
+     * Used for testing.
+     */
+    public int[][] getTiles() {
+        return this.tiles;
+    }
+
+    /**
+     * Used for testing.
+     */
+    public int getScore() {
+        return score;
     }
 
     /**
