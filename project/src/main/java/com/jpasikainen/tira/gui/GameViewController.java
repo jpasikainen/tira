@@ -55,6 +55,7 @@ public class GameViewController {
             else if(tile == 512) rect.setFill(Color.web("#edc850"));
             else if(tile == 1024) rect.setFill(Color.web("#edc53f"));
             else if(tile == 2048) rect.setFill(Color.web("#edc22e"));
+            else rect.setFill(Color.web("#d6aa12"));
             Text text = (Text) group.getChildren().get(1);
             String ts = tile == 0 ? "" : Integer.toString(tile);
             text.setText(ts);
