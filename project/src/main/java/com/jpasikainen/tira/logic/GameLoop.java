@@ -42,17 +42,22 @@ public class GameLoop extends AnimationTimer {
      * The level of depth that the algorithm will reach.
      */
     private int depth = 1;
+    /**
+     * Start a new round automatically
+     */
+    private boolean auto;
 
     /**
      * Constructor.
      * @param gvc GameViewController where the graphics live.
      * @param scene
      */
-    public GameLoop(GameViewController gvc, Scene scene, int depth) {
+    public GameLoop(GameViewController gvc, Scene scene, int depth, boolean auto) {
         // Set the variables
         this.gvc = gvc;
         this.scene = scene;
         this.depth = depth;
+        this.auto = auto;
         this.tiles = new int[4][4];
 
         // Draw the graphics
@@ -140,11 +145,24 @@ public class GameLoop extends AnimationTimer {
             KeyCode bestMove = Solver.solve(this.tiles, depth);
             gvc.updateMoveTime(System.currentTimeMillis() - startTime);
             if (bestMove == null) {
-                gameIsRunning = false;
+                if (auto) {
+                    reset();
+                } else {
+                    gameIsRunning = false;
+                }
             }
             moveTiles(bestMove);
         }
         draw();
+    }
+
+    /**
+     * Initialize the board and reset the score.
+     */
+    public void reset() {
+        this.tiles = new int[4][4];
+        this.score = 0;
+        Board.spawnRandom(this.tiles);
     }
 
     /**

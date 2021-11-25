@@ -63,6 +63,23 @@ public final class Board {
     }
 
     /**
+     * Return the highest tile value on the given board.
+     * @param tiles
+     * @return highest tile.
+     */
+    public static int highestTileValue(int[][] tiles) {
+        int maxValue = tiles[0][0];
+        for (int y = 0; y < tiles.length; y++) {
+            for (int x = 0; x < tiles.length; x++) {
+                if (tiles[y][x] > maxValue) {
+                    maxValue = tiles[y][x];
+                }
+            }
+        }
+        return maxValue;
+    }
+
+    /**
      * Flip tiles horizontally.
      * @param tiles tiles
      */

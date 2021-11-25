@@ -104,8 +104,6 @@ public class Solver {
         double score = 0.0;// maxTilePosition(tiles) + monotonicityHorizontal(tiles) + monotonicityVertical(tiles) + smoothnessVertical(tiles) + smoothnessHorizontal(tiles);
         //return score * weightScore(tiles, weightedTilesHorizontal) * weightScore(tiles, weightedTilesVertical);
 
-        // Largest value on top-left
-        score += maxTilePosition(tiles);
         // Smoothness
         score += smoothness(tiles);
 
@@ -135,26 +133,6 @@ public class Solver {
             }
         }
         return score * freeTiles;
-    }
-
-    /**
-     * Reward for having the highest key in the top-left corner.
-     * @param tiles
-     * @return
-     */
-    private static int maxTilePosition(int[][] tiles) {
-        int maxValue = tiles[0][0];
-        for (int j = 0; j < tiles.length; j++) {
-            for (int i = 0; i < tiles[j].length; i++) {
-                if (tiles[j][i] > maxValue) {
-                    maxValue = tiles[j][i];
-                }
-            }
-        }
-        if (tiles[0][0] == maxValue) {
-            return maxValue;
-        }
-        return -maxValue;
     }
 
     /**
