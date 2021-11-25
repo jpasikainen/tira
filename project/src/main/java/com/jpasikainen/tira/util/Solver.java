@@ -7,16 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Solver {
-    private static class Pair<A, K> {
-        public final A alpha;
-        public final K key;
-
-        private Pair(A a, K k) {
-            this.alpha = a;
-            this.key = k;
-        }
-    }
-
     private static final int[][] weightedTiles = {{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}}; //{{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//
     private static final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
 
@@ -32,7 +22,7 @@ public class Solver {
      * @return true if there was something to solve, otherwise false
      */
     public static KeyCode solve(int[][] tiles, int depth) {
-        Pair<Double, KeyCode> res = expectiMiniMax(tiles, depth, true);
+        AlphaKey<Double, KeyCode> res = expectiMiniMax(tiles, depth, true);
         return res.key;
     }
 
@@ -42,7 +32,7 @@ public class Solver {
      * @param depth
      * @return alpha value and the best move.
      */
-    private static Pair<Double, KeyCode> playerMax(int[][] tiles, int depth) {
+    private static AlphaKey<Double, KeyCode> playerMax(int[][] tiles, int depth) {
         double alpha = -1.0;
 
         // Simulate moves
@@ -63,7 +53,7 @@ public class Solver {
             }
         }
 
-        return new Pair(alpha, bestMove);
+        return new AlphaKey(alpha, bestMove);
     }
 
     /**
@@ -72,7 +62,7 @@ public class Solver {
      * @param depth
      * @return alpha value and null move.
      */
-    private static Pair<Double, KeyCode> expectiBoard(int[][] tiles, int depth) {
+    private static AlphaKey<Double, KeyCode> expectiBoard(int[][] tiles, int depth) {
         double alpha = -1.0;
         // Simulate all free tiles as 2s or 4s
         ArrayList<int[]> freeTiles = Board.getFreeTiles(tiles);
@@ -93,12 +83,12 @@ public class Solver {
                 alpha += 0.1 * newAlpha;
             }
         }
-        return new Pair(alpha, null);
+        return new AlphaKey(alpha, null);
     }
     private static int dep = 0;
-    private static Pair<Double, KeyCode> expectiMiniMax(int[][] tiles, int depth, boolean playerTurn) {
+    private static AlphaKey<Double, KeyCode> expectiMiniMax(int[][] tiles, int depth, boolean playerTurn) {
         if (depth == 0) {
-            return new Pair(heuristicValue(tiles), null);
+            return new AlphaKey(heuristicValue(tiles), null);
         }
         if (playerTurn) {
             return playerMax(tiles, depth);
