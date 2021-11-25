@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Solver {
-    private static final int[][] weightedTiles = {{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}}; //{{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//
+    //private static final int[][] weightedTiles = {{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}}; //{{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//
+    private static final int[][] weightedTilesHorizontal = {{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}};
+    private static final int[][] weightedTilesVertical = {{15,8,7,0}, {14,9,6,1}, {13,10,5,2}, {12,11,4,3}};
     private static final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
 
     private GameLoop gl;
@@ -50,6 +52,8 @@ public class Solver {
             if (newAlpha > alpha) {
                 alpha = newAlpha;
                 bestMove = move;
+            } else if (bestMove == null) {
+                bestMove = move;
             }
         }
         return new AlphaKey(alpha, bestMove);
@@ -84,7 +88,7 @@ public class Solver {
         }
         return new AlphaKey(alpha, previousKey);
     }
-    private static int dep = 0;
+
     private static AlphaKey<Double, KeyCode> expectiMiniMax(int[][] tiles, int depth, KeyCode previousKey, boolean playerTurn) {
         if (depth == 0) {
             return new AlphaKey(heuristicValue(tiles), previousKey);
@@ -97,7 +101,32 @@ public class Solver {
 
     private static double heuristicValue(int[][] tiles) {
         // Evaluate the board's score
-        double score = 0.0;
+        double score = 0.0;// maxTilePosition(tiles) + monotonicityHorizontal(tiles) + monotonicityVertical(tiles) + smoothnessVertical(tiles) + smoothnessHorizontal(tiles);
+        //return score * weightScore(tiles, weightedTilesHorizontal) * weightScore(tiles, weightedTilesVertical);
+
+        // Largest value on top-left
+        score += maxTilePosition(tiles);
+        // Smoothness
+        score += smoothness(tiles);
+
+        // Decide which is the better snake
+        double hor = monotonicityHorizontal(tiles);
+        double vert = monotonicityVertical(tiles);
+        if (hor < vert) {
+            score += vert;
+            score *= weightScore(tiles, weightedTilesVertical);
+        } else {
+            score += hor;
+            score *= weightScore(tiles, weightedTilesHorizontal);
+        }
+        //System.out.println(hor + " vs " + vert);
+        //System.out.println(score);
+        return score;
+        //return weightScore(tiles, weightedTilesHorizontal);
+    }
+
+    private static int weightScore(int[][] tiles, int[][] weightedTiles) {
+        int score = 0;
         int freeTiles = Board.getFreeTiles(tiles).size();
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
@@ -105,17 +134,14 @@ public class Solver {
                 score += tiles[y][x] * weightedTiles[y][x];
             }
         }
-        // Largest value on top-left
-        score += maxTilePosition(tiles);
-        // Empty tiles
-        score *= freeTiles;
-        // Monotonicity
-        score += monotonicity(tiles);
-        // Smoothness
-        score += smoothness(tiles);
-        return score;
+        return score * freeTiles;
     }
 
+    /**
+     * Reward for having the highest key in the top-left corner.
+     * @param tiles
+     * @return
+     */
     private static int maxTilePosition(int[][] tiles) {
         int maxValue = tiles[0][0];
         for (int j = 0; j < tiles.length; j++) {
@@ -131,47 +157,56 @@ public class Solver {
         return -maxValue;
     }
 
-    private static int monotonicity(int[][] tiles) {
-        int mono = 0;
+    /**
+     * Reward for having values increase or decrease in a snake-like pattern.
+     * @param tiles
+     * @return
+     */
+    private static int monotonicityHorizontal(int[][] tiles) {
+        int monotonicity = 0;
 
+        // Evaluate rows
         for (int[] row : tiles) {
             int diff = row[0] - row[1];
             for (int x = 0; x < tiles.length - 1; x++) {
                 if ((row[x] - row[x + 1]) * diff <= 0) {
-                    mono += 1;
+                    monotonicity += 1;
                 }
                 diff = row[x] - row[x + 1];
             }
         }
 
+        return monotonicity;
+    }
+
+    private static int monotonicityVertical(int[][] tiles) {
+        int monotonicity = 0;
+
         for (int x = 0; x < tiles.length; x++) {
             int diff = tiles[0][x] - tiles[1][x];
             for (int y = 0; y < tiles.length - 1; y++) {
                 if ((tiles[y][x] - tiles[y + 1][x]) * diff <= 0) {
-                    mono += 1;
+                    monotonicity += 1;
                 }
                 diff = tiles[y][x] - tiles[y + 1][x];
             }
         }
 
-        return mono;
+        return monotonicity;
     }
 
     private static int smoothness(int[][] tiles) {
         int smoothness = 0;
-
         for (int[] row : tiles) {
             for (int x = 0; x < tiles.length - 1; x++) {
                 smoothness += Math.abs(row[x] - row[x + 1]);
             }
         }
-
         for (int y = 0; y < tiles.length - 1; y++) {
             for (int x = 0; x < tiles.length; x++) {
                 smoothness += Math.abs(tiles[y][x] - tiles[y + 1][x]);
             }
         }
-
         return smoothness;
     }
 }

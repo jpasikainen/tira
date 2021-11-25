@@ -131,26 +131,18 @@ public class GameLoop extends AnimationTimer {
     }
 
     /**
-     * Timer.
-     */
-    private float t = 0;
-    /**
      * Update loop run every frame.
      * @param delta time
      */
     private void update(double delta) {
-        t += delta;
-        if (t >= 0.05) {
-            if (solve) {
-                long startTime = System.currentTimeMillis();
-                KeyCode bestMove = Solver.solve(this.tiles, depth);
-                gvc.updateMoveTime(System.currentTimeMillis() - startTime);
-                if (bestMove == null) {
-                    gameIsRunning = false;
-                }
-                moveTiles(bestMove);
+        if (solve) {
+            long startTime = System.currentTimeMillis();
+            KeyCode bestMove = Solver.solve(this.tiles, depth);
+            gvc.updateMoveTime(System.currentTimeMillis() - startTime);
+            if (bestMove == null) {
+                gameIsRunning = false;
             }
-            t = 0;
+            moveTiles(bestMove);
         }
         draw();
     }

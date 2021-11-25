@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="673c9df9-37f7-4df0-b516-48c4595ec252" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/logic/GameLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/logic/GameLoop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/util/Solver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/util/Solver.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +81,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources/com.jpasikainen.tira" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Solve2">
+  <component name="RunManager" selected="Gradle.Solve8">
     <configuration name="Run" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -195,10 +196,30 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="Solve8" type="GradleRunConfiguration" factoryName="Gradle">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="run --args=&quot;--depth 8&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Gradle.Solve5" />
       <item itemvalue="Gradle.SOlve6" />
       <item itemvalue="Gradle.Solve7" />
+      <item itemvalue="Gradle.Solve8" />
       <item itemvalue="Gradle.Run" />
       <item itemvalue="Gradle.Solve2" />
       <item itemvalue="Gradle.Solve1" />
