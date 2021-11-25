@@ -3,6 +3,7 @@
 ## Documentation
 
 ### [Project Specification](https://github.com/jpasikainen/tira/blob/main/documentation/srs.md)
+### [Testing](https://github.com/jpasikainen/tira/blob/main/documentation/testing.md)
 
 ## Weekly reports
 
