@@ -22,7 +22,7 @@ public class Solver {
      * @return true if there was something to solve, otherwise false
      */
     public static KeyCode solve(int[][] tiles, int depth) {
-        AlphaKey<Double, KeyCode> res = expectiMiniMax(tiles, depth, true);
+        AlphaKey<Double, KeyCode> res = expectiMiniMax(tiles, depth, null,true);
         return res.key;
     }
 
@@ -46,13 +46,12 @@ public class Solver {
                 continue;
             }
 
-            double newAlpha = expectiMiniMax(simulatedTiles, depth - 1, false).alpha;
+            double newAlpha = expectiMiniMax(simulatedTiles, depth - 1, move, false).alpha;
             if (newAlpha > alpha) {
                 alpha = newAlpha;
                 bestMove = move;
             }
         }
-
         return new AlphaKey(alpha, bestMove);
     }
 
@@ -62,7 +61,7 @@ public class Solver {
      * @param depth
      * @return alpha value and null move.
      */
-    private static AlphaKey<Double, KeyCode> expectiBoard(int[][] tiles, int depth) {
+    private static AlphaKey<Double, KeyCode> expectiBoard(int[][] tiles, int depth, KeyCode previousKey) {
         double alpha = -1.0;
         // Simulate all free tiles as 2s or 4s
         ArrayList<int[]> freeTiles = Board.getFreeTiles(tiles);
@@ -70,7 +69,7 @@ public class Solver {
             // Add 2
             int[][] simulatedTiles = Arrays.stream(tiles).map(int[]::clone).toArray(int[][]::new);
             simulatedTiles[tile[0]][tile[1]] = 2;
-            double newAlpha = expectiMiniMax(simulatedTiles, depth - 1, true).alpha;
+            double newAlpha = expectiMiniMax(simulatedTiles, depth - 1, previousKey, true).alpha;
             if (newAlpha != -1.0) {
                 alpha += 0.9 * newAlpha;
             }
@@ -78,23 +77,22 @@ public class Solver {
             // Add 4
             simulatedTiles = Arrays.stream(tiles).map(int[]::clone).toArray(int[][]::new);
             simulatedTiles[tile[0]][tile[1]] = 4;
-            newAlpha = expectiMiniMax(simulatedTiles, depth - 1, true).alpha;
+            newAlpha = expectiMiniMax(simulatedTiles, depth - 1, previousKey, true).alpha;
             if (newAlpha != -1.0) {
                 alpha += 0.1 * newAlpha;
             }
         }
-        return new AlphaKey(alpha, null);
+        return new AlphaKey(alpha, previousKey);
     }
     private static int dep = 0;
-    private static AlphaKey<Double, KeyCode> expectiMiniMax(int[][] tiles, int depth, boolean playerTurn) {
+    private static AlphaKey<Double, KeyCode> expectiMiniMax(int[][] tiles, int depth, KeyCode previousKey, boolean playerTurn) {
         if (depth == 0) {
-            return new AlphaKey(heuristicValue(tiles), null);
+            return new AlphaKey(heuristicValue(tiles), previousKey);
         }
         if (playerTurn) {
             return playerMax(tiles, depth);
         }
-        dep = depth;
-        return expectiBoard(tiles, depth);
+        return expectiBoard(tiles, depth, previousKey);
     }
 
     private static double heuristicValue(int[][] tiles) {
@@ -105,16 +103,16 @@ public class Solver {
             for (int x = 0; x < tiles.length; x++) {
                 // Weight matrix
                 score += tiles[y][x] * weightedTiles[y][x];
-                // Largest value on top-left
-                score += maxTilePosition(tiles);
-                // Empty tiles
-                score *= freeTiles;
-                // Monotonicity
-                score += monotonicity(tiles);
-                // Smoothness
-                score += smoothness(tiles);
             }
         }
+        // Largest value on top-left
+        score += maxTilePosition(tiles);
+        // Empty tiles
+        score *= freeTiles;
+        // Monotonicity
+        score += monotonicity(tiles);
+        // Smoothness
+        score += smoothness(tiles);
         return score;
     }
 
@@ -163,13 +161,13 @@ public class Solver {
         int smoothness = 0;
 
         for (int[] row : tiles) {
-            for (int y = 0; y < tiles.length - 1; y++) {
-                smoothness += Math.abs(row[y] - row[y + 1]);
+            for (int x = 0; x < tiles.length - 1; x++) {
+                smoothness += Math.abs(row[x] - row[x + 1]);
             }
         }
 
-        for (int x = 0; x < tiles.length; x++) {
-            for (int y = 0; y < tiles.length - 1; y++) {
+        for (int y = 0; y < tiles.length - 1; y++) {
+            for (int x = 0; x < tiles.length; x++) {
                 smoothness += Math.abs(tiles[y][x] - tiles[y + 1][x]);
             }
         }
