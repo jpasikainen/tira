@@ -20,6 +20,11 @@ public class Game extends javafx.application.Application {
     private static boolean auto = false;
 
     /**
+     * Used for saving the value for analyzing.
+     */
+    private static boolean analyze = false;
+
+    /**
      * Starts the application by first setting up graphics and then launching the game loop.
      * @param stage stage
      * @throws IOException Exception
@@ -37,7 +42,7 @@ public class Game extends javafx.application.Application {
         stage.show();
 
         // Start the game loop
-        new GameLoop(controller, scene, depth, auto);
+        new GameLoop(controller, scene, depth, auto, analyze);
     }
 
     /**
@@ -50,6 +55,8 @@ public class Game extends javafx.application.Application {
                 depth = Integer.parseInt(args[i+1]);
             } else if (args[i].equals("--auto")) {
                 auto = true;
+            } else if (args[i].equals("--analyze")) {
+                analyze = true;
             }
 
         }

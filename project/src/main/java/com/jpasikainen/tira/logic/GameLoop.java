@@ -46,18 +46,27 @@ public class GameLoop extends AnimationTimer {
      * Start a new round automatically
      */
     private boolean auto;
+    /**
+     * Debugging for analyzing.
+     */
+    private boolean analyze;
+    /**
+     * Times the game will runs.
+     */
+    private int gameRuns = 0;
 
     /**
      * Constructor.
      * @param gvc GameViewController where the graphics live.
      * @param scene
      */
-    public GameLoop(GameViewController gvc, Scene scene, int depth, boolean auto) {
+    public GameLoop(GameViewController gvc, Scene scene, int depth, boolean auto, boolean analyze) {
         // Set the variables
         this.gvc = gvc;
         this.scene = scene;
         this.depth = depth;
         this.auto = auto;
+        this.analyze = analyze;
         this.tiles = new int[4][4];
 
         // Draw the graphics
@@ -147,6 +156,13 @@ public class GameLoop extends AnimationTimer {
             KeyCode bestMove = Solver.solve(this.tiles, depth);
             gvc.updateMoveTime(System.currentTimeMillis() - startTime);
             if (bestMove == null) {
+                if (analyze) {
+                    gameRuns += 1;
+                    System.out.println(String.format("%d, %d, %d", depth, Board.highestTileValue(this.tiles), score));
+                    if (gameRuns == 100) {
+                        System.exit(0);
+                    }
+                }
                 if (auto) {
                     reset();
                 } else {
