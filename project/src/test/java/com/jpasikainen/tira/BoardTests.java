@@ -1,10 +1,13 @@
 package com.jpasikainen.tira;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.jpasikainen.tira.util.Board;
 import javafx.scene.input.KeyCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 public class BoardTests {
     private int[][] tiles;
@@ -96,5 +99,46 @@ public class BoardTests {
         tiles[1][0] = 1;
         Board.moveTiles(KeyCode.DOWN, tiles);
         assertEquals(tiles[3][0], 2);
+    }
+
+    @Test
+    void testThreeInARowMerge() {
+        tiles[0][0] = 1;
+        tiles[1][0] = 1;
+        tiles[2][0] = 1;
+        Board.moveTiles(KeyCode.UP, tiles);
+        assertEquals(tiles[0][0], 2);
+        assertEquals(tiles[1][0], 1);
+    }
+
+    @Test
+    void testFourInARowMerge() {
+        tiles[0][0] = 1;
+        tiles[1][0] = 1;
+        tiles[2][0] = 1;
+        tiles[3][0] = 1;
+        Board.moveTiles(KeyCode.UP, tiles);
+        assertEquals(tiles[0][0], 2);
+        assertEquals(tiles[1][0], 2);
+    }
+
+    @Test
+    void testTilesStayStillWhenAgainstEdge() {
+        tiles[0][0] = 1;
+        tiles[1][0] = 1;
+        tiles[2][0] = 1;
+        tiles[3][0] = 1;
+        int[][] correctTiles = {{1, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}, {1, 0, 0, 0}};
+        Board.moveTiles(KeyCode.LEFT, tiles);
+        assertTrue(Arrays.deepEquals(tiles, correctTiles));
+    }
+
+    @Test
+    void testHighestValueIsCorrect() {
+        tiles[0][0] = 1;
+        tiles[1][0] = 8;
+        tiles[2][2] = 4;
+        tiles[3][1] = 7;
+        assertEquals(Board.highestTileValue(tiles), 8);
     }
 }

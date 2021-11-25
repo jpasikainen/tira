@@ -15,19 +15,6 @@ public final class Board {
     private Board() {
     }
 
-     /**
-     * Print the game board as 4x4 grid.
-      * @param tiles tiles
-     */
-    public static void printBoard(int[][] tiles) {
-        for (int y = 0; y < tiles.length; y++) {
-            for (int x = 0; x < tiles.length; x++) {
-                System.out.print(tiles[y][x]);
-            }
-            System.out.println();
-        }
-    }
-
     /**
      * Spawns a tile at a random position on the board.
      * Has either value of 2 or 4 with 10% and 90% chance respectively.
