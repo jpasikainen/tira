@@ -39,6 +39,9 @@ public class Game extends javafx.application.Application {
         stage.setTitle("2048");
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.setWidth(600);
+        stage.setHeight(600);
+        stage.hide();
         stage.show();
 
         // Start the game loop
