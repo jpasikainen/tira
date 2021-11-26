@@ -1,5 +1,7 @@
 # TIRA
 
+![](documentation/demo.gif)
+
 ## Documentation
 
 ### [Project Specification](https://github.com/jpasikainen/tira/blob/main/documentation/srs.md)
