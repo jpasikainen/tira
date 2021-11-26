@@ -22,20 +22,7 @@ The solver algorithm produces different results when using varying levels of dep
 
 Score testing runs the game a hundred times starting with the depth of one incrementally increasing it all the way up to seven. Higher levels of depth take too much time on an 8th generation Intel i5 chip. Each run starts with an empty board and ends when no more moves can be done. During each run the following are recorded: depth, the highest tile, score.
 
-### Results for 100 games
-#### Legend
-**Highest tile:** highest value the solver was able to achieve\
-**256,512,1024,2048:** The percantage of the times the solver was able to achieve that value in a game\
-**Mean score:** sum of scores divided by 100
 
-| Depth        | 1   | 2   | 3    | 4    | 5    | 6    | 7     |
-|--------------|-----|-----|------|------|------|------|-------|
-| Highest Tile | 256 | 256 | 1024 | 1024 | 2048 | 2048 | 2048  |
-| 256          | 18% | 29% | 100% | 96%  | 100% | 100% | 100%  |
-| 512          | 0%  | 0%  | 94%  | 82%  | 99%  | 99%  | 100%  |
-| 1024         | 0%  | 0%  | 25%  | 30%  | 71%  | 78%  | 90%   |
-| 2048         | 0%  | 0%  | 0%   | 0%   | 10%  | 14%  | 48%   |
-| Mean score   | 696 | 836 | 4096 | 4112 | 6779 | 7492 | 10477 |
 
 ## How to Reproduce the Test Results
 Unit tests are always ran when the application is started or with command ``gradle test``.
