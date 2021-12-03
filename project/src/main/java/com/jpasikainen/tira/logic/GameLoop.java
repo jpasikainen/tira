@@ -14,45 +14,15 @@ import java.util.Arrays;
  */
 public class GameLoop extends AnimationTimer {
     private static int score = 0;
-    /**
-     * Defines does the game accept tile movement.
-     */
     private boolean gameIsRunning = true;
-    /**
-     * How long previous tick took.
-     */
     private long pastTick;
-    /**
-     * GameViewController.
-     */
     private GameViewController gvc;
-    /**
-     * Scene.
-     */
     private Scene scene;
-    /**
-     * Tiles.
-     */
     private int[][] tiles;
-    /**
-     * To solve or not to solve.
-     */
     private boolean solve;
-    /**
-     * The level of depth that the algorithm will reach.
-     */
     private int depth = 1;
-    /**
-     * Start a new round automatically
-     */
     private boolean auto;
-    /**
-     * Debugging for analyzing.
-     */
     private boolean analyze;
-    /**
-     * Times the game will runs.
-     */
     private int gameRuns = 0;
 
     /**

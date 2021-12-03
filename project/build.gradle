@@ -57,6 +57,7 @@ jacocoTestReport {
 checkstyle {
     ignoreFailures = true
     checkstyleMain.source = "src"
-    checkstyleMain.exclude('main/java/com/jpasikainen/tira/gui/*.java')
-    checkstyleMain.exclude('test/java/com/jpasikainen/tira/*.java')
 }
+
+checkstyleMain.exclude('main/java/com/jpasikainen/tira/gui/*.java')
+checkstyleMain.exclude('test/java/com/jpasikainen/tira/*')

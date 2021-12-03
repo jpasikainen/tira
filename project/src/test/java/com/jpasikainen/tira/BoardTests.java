@@ -141,4 +141,21 @@ public class BoardTests {
         tiles[3][1] = 7;
         assertEquals(Board.highestTileValue(tiles), 8);
     }
+
+    @Test
+    void testComplexBoardMoveMultipleMergesHorizontal() {
+        tiles = new int[][]{{2, 4, 4, 4}, {2, 2, 4, 4}, {2, 4, 8, 16}, {2, 4, 8, 8}};
+        int[][] correctTiles = {{2, 8, 4, 0}, {4, 8, 0, 0}, {2, 4, 8, 16}, {2, 4, 16, 0}};
+        Board.moveTiles(KeyCode.LEFT, tiles);
+        assertTrue(Arrays.deepEquals(tiles, correctTiles));
+    }
+
+    @Test
+    void testComplexBoardMoveMultipleMergesVertical() {
+        tiles = new int[][]{{2, 4, 4, 4}, {2, 2, 4, 4}, {4, 4, 8, 16}, {4, 4, 8, 8}};
+        int[][] correctTiles = {{4, 4, 8, 8}, {8, 2, 16, 16}, {0, 8, 0, 8}, {0, 0, 0, 0}};
+        Board.moveTiles(KeyCode.UP, tiles);
+        Arrays.stream(tiles).forEach(row -> Arrays.stream(row).forEach(tile -> System.out.println(tile)));
+        assertTrue(Arrays.deepEquals(tiles, correctTiles));
+    }
 }

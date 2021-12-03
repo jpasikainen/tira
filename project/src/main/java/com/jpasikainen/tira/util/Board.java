@@ -101,7 +101,6 @@ public final class Board {
      * @param tiles tiles
      */
     public static int moveTiles(final KeyCode key, int[][] tiles) {
-        //System.out.println(key);
         int mergeScore = 0;
 
         // Move
@@ -110,6 +109,7 @@ public final class Board {
                 flipHorizontally(tiles);
             }
             for (int y = 0; y < tiles.length; y++) {
+                int maxX = 4;
                 for (int x = 3; x >= 0; x--) {
                     int tile = tiles[y][x];
                     // Don't move empty tiles
@@ -121,11 +121,12 @@ public final class Board {
                     int value = tiles[y][x];
                     tiles[y][x] = 0;
                     int newX = x + 1;
-                    while (newX < 4 && (tiles[y][newX] == 0 || tiles[y][newX] == tile)) {
+                    while (newX < maxX && (tiles[y][newX] == 0 || tiles[y][newX] == tile)) {
                         // Merge
                         if (tiles[y][newX] == tile) {
                             mergeScore += value;
                             value = tile * 2;
+                            maxX = newX;
                             newX++;
                             break;
                         }
@@ -144,8 +145,9 @@ public final class Board {
             if (key == KeyCode.UP) {
                 flipVertically(tiles);
             }
-            for (int y = 3; y >= 0; y--) {
-                for (int x = 0; x < tiles.length; x++) {
+            for (int x = 0; x < tiles.length; x++) {
+                int maxY = 4;
+                for (int y = 3; y >= 0; y--) {
                     int tile = tiles[y][x];
                     // Don't move empty tiles
                     if (tile == 0) {
@@ -156,11 +158,12 @@ public final class Board {
                     int value = tiles[y][x];
                     tiles[y][x] = 0;
                     int newY = y + 1;
-                    while (newY < 4 && (tiles[newY][x] == 0 || tiles[newY][x] == tile)) {
+                    while (newY < maxY && (tiles[newY][x] == 0 || tiles[newY][x] == tile)) {
                         // Merge
                         if (tiles[newY][x] == tile) {
                             mergeScore += value;
                             value = tile * 2;
+                            maxY = newY;
                             newY++;
                             break;
                         }

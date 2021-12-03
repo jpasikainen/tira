@@ -1,22 +1,14 @@
 package com.jpasikainen.tira.util;
 
-import com.jpasikainen.tira.logic.GameLoop;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Solver {
-    //private static final int[][] weightedTiles = {{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}}; //{{6,5,4,3}, {5,4,3,2}, {4,3,2,1}, {3,2,1,0}};//
-    private static final int[][] weightedTilesHorizontal = {{15,14,13,12}, {8,9,10,11}, {7,6,5,4}, {0,1,2,3}};
-    private static final int[][] weightedTilesVertical = {{15,8,7,0}, {14,9,6,1}, {13,10,5,2}, {12,11,4,3}};
+    private static final int[][] weightedTilesHorizontal = {{15, 14, 13, 12}, {8, 9, 10, 11}, {7, 6, 5, 4}, {0, 1, 2, 3}};
+    private static final int[][] weightedTilesVertical = {{15, 8, 7, 0}, {14, 9, 6, 1}, {13, 10, 5, 2}, {12, 11, 4, 3}};
     private static final KeyCode[] moves = {KeyCode.LEFT, KeyCode.RIGHT, KeyCode.UP, KeyCode.DOWN};
-
-    private GameLoop gl;
-
-    public Solver(GameLoop gl) {
-        this.gl = gl;
-    }
 
     /**
      * Solve the given board.
@@ -37,7 +29,7 @@ public class Solver {
     private static AlphaKey<Double, KeyCode> playerMax(int[][] tiles, int depth) {
         double alpha = -1.0;
 
-        // Simulate moves
+        // Simulate moves.
         KeyCode bestMove = null;
         for (KeyCode move : moves) {
             int[][] simulatedTiles = Arrays.stream(tiles).map(int[]::clone).toArray(int[][]::new);
@@ -99,11 +91,13 @@ public class Solver {
         return expectiBoard(tiles, depth, previousKey);
     }
 
+    /**
+     * Evaluate the board's score.
+     * @param tiles
+     * @return
+     */
     private static double heuristicValue(int[][] tiles) {
-        // Evaluate the board's score
-        double score = 0.0;// maxTilePosition(tiles) + monotonicityHorizontal(tiles) + monotonicityVertical(tiles) + smoothnessVertical(tiles) + smoothnessHorizontal(tiles);
-        //return score * weightScore(tiles, weightedTilesHorizontal) * weightScore(tiles, weightedTilesVertical);
-
+        double score = 0.0;
         // Smoothness
         score += smoothness(tiles);
 
@@ -117,12 +111,15 @@ public class Solver {
             score += hor;
             score *= weightScore(tiles, weightedTilesHorizontal);
         }
-        //System.out.println(hor + " vs " + vert);
-        //System.out.println(score);
         return score;
-        //return weightScore(tiles, weightedTilesHorizontal);
     }
 
+    /**
+     * Calculate weighted score.
+     * @param tiles
+     * @param weightedTiles
+     * @return
+     */
     private static int weightScore(int[][] tiles, int[][] weightedTiles) {
         int score = 0;
         int freeTiles = Board.getFreeTiles(tiles).size();
@@ -157,6 +154,11 @@ public class Solver {
         return monotonicity;
     }
 
+    /**
+     * Calculate vertical monoticity score.
+     * @param tiles
+     * @return
+     */
     private static int monotonicityVertical(int[][] tiles) {
         int monotonicity = 0;
 
@@ -173,6 +175,11 @@ public class Solver {
         return monotonicity;
     }
 
+    /**
+     * Calculate smoothness.
+     * @param tiles
+     * @return
+     */
     private static int smoothness(int[][] tiles) {
         int smoothness = 0;
         for (int[] row : tiles) {
