@@ -42,7 +42,7 @@ public class SolverTests {
     void testVariation2Depth4() {
         int[][] tiles = {{2, 2, 0, 8}, {0, 4, 0, 0}, {4, 2, 0, 0}, {0, 0, 4, 4}};
         KeyCode bestMove = Solver.solve(tiles, 4);
-        assertEquals(bestMove, KeyCode.UP);
+        assertEquals(bestMove, KeyCode.LEFT);
     }
 
     @Test

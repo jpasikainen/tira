@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="673c9df9-37f7-4df0-b516-48c4595ec252" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../documentation/reports/w4.md" beforeDir="false" afterPath="$PROJECT_DIR$/../documentation/reports/w4.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../analyze.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../analyze.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/logic/GameLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/logic/GameLoop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/util/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/util/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/util/Solver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/util/Solver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/jpasikainen/tira/BoardTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/jpasikainen/tira/BoardTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/jpasikainen/tira/SolverTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/jpasikainen/tira/SolverTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +84,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources/com.jpasikainen.tira" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Run">
+  <component name="RunManager" selected="Gradle.SOlve6">
     <configuration name="Run" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
