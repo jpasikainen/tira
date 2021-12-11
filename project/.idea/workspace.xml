@@ -7,11 +7,6 @@
     <list default="true" id="673c9df9-37f7-4df0-b516-48c4595ec252" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/logic/GameLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/logic/GameLoop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/util/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/util/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/util/Solver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jpasikainen/tira/logic/Solver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/jpasikainen/tira/SolverTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/jpasikainen/tira/SolverTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +83,20 @@
       <recent name="$PROJECT_DIR$/src/main/resources/com.jpasikainen.tira" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.SOlve6">
+  <component name="RunManager" selected="Application.Game">
+    <configuration name="Game" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.jpasikainen.tira.Game" />
+      <module name="tira.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.jpasikainen.tira.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Run" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -230,7 +238,13 @@
       <item itemvalue="Gradle.Run" />
       <item itemvalue="Gradle.Solve2" />
       <item itemvalue="Gradle.Solve1" />
+      <item itemvalue="Application.Game" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Game" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
