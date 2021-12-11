@@ -2,7 +2,6 @@ package com.jpasikainen.tira.logic;
 
 import com.jpasikainen.tira.gui.GameViewController;
 import com.jpasikainen.tira.util.Board;
-import com.jpasikainen.tira.util.Solver;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;

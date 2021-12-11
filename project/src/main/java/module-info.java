@@ -2,7 +2,6 @@ module com.jpasikainen.tira {
     requires javafx.fxml;
     requires javafx.graphics;
 
-
     opens com.jpasikainen.tira to javafx.fxml;
     exports com.jpasikainen.tira;
     exports com.jpasikainen.tira.logic;

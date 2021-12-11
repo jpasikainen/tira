@@ -1,5 +1,7 @@
-package com.jpasikainen.tira.util;
+package com.jpasikainen.tira.logic;
 
+import com.jpasikainen.tira.util.AlphaKey;
+import com.jpasikainen.tira.util.Board;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
@@ -66,17 +68,13 @@ public class Solver {
             int[][] simulatedTiles = Arrays.stream(tiles).map(int[]::clone).toArray(int[][]::new);
             simulatedTiles[tile[0]][tile[1]] = 2;
             double newAlpha = expectiMiniMax(simulatedTiles, depth - 1, previousKey, true).alpha;
-            if (newAlpha != -1.0) {
-                alpha += 0.9 * newAlpha;
-            }
+            alpha += 0.9 * newAlpha;
 
             // Add 4
             simulatedTiles = Arrays.stream(tiles).map(int[]::clone).toArray(int[][]::new);
             simulatedTiles[tile[0]][tile[1]] = 4;
             newAlpha = expectiMiniMax(simulatedTiles, depth - 1, previousKey, true).alpha;
-            if (newAlpha != -1.0) {
-                alpha += 0.1 * newAlpha;
-            }
+            alpha += 0.1 * newAlpha;
         }
         return new AlphaKey(alpha, previousKey);
     }
@@ -122,7 +120,7 @@ public class Solver {
      */
     private static int weightScore(int[][] tiles, int[][] weightedTiles) {
         int score = 0;
-        int freeTiles = Board.getFreeTiles(tiles).size();
+        int freeTiles = Board.getFreeTiles(tiles).size() * 8;
         for (int y = 0; y < tiles.length; y++) {
             for (int x = 0; x < tiles.length; x++) {
                 // Weight matrix
@@ -143,7 +141,7 @@ public class Solver {
         // Evaluate rows
         for (int[] row : tiles) {
             int diff = row[0] - row[1];
-            for (int x = 0; x < tiles.length - 1; x++) {
+            for (int x = 1; x < tiles.length - 1; x++) {
                 if ((row[x] - row[x + 1]) * diff <= 0) {
                     monotonicity += 1;
                 }
@@ -164,7 +162,7 @@ public class Solver {
 
         for (int x = 0; x < tiles.length; x++) {
             int diff = tiles[0][x] - tiles[1][x];
-            for (int y = 0; y < tiles.length - 1; y++) {
+            for (int y = 1; y < tiles.length - 1; y++) {
                 if ((tiles[y][x] - tiles[y + 1][x]) * diff <= 0) {
                     monotonicity += 1;
                 }

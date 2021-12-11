@@ -3,8 +3,7 @@ package com.jpasikainen.tira.util;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
-
+import java.util.Random;
 /**
  * Utility class that requires tiles to be passed to every method.
  */
@@ -22,11 +21,11 @@ public final class Board {
      */
     public static void spawnRandom(int[][] tiles) {
         ArrayList<int[]> freeIntegers = getFreeTiles(tiles);
-        int[] tile = freeIntegers.get(
-                ThreadLocalRandom.current().nextInt(0, freeIntegers.size())
-        );
+        Random rnd = new Random();
+
+        int[] tile = freeIntegers.get(rnd.nextInt(freeIntegers.size()));
         int value = 2;
-        if (ThreadLocalRandom.current().nextInt(0, 10) == 9) {
+        if (rnd.nextInt(10) == 0) {
             value = 4;
         }
         tiles[tile[0]][tile[1]] = value;
