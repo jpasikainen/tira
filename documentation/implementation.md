@@ -29,6 +29,8 @@ Notes: When evaluating the heuristic score, the tile lookups are O(n^2). But sin
 | 2048         | 0%  | 0%  | 0%   | 0%   | 10%  | 14%  | 48%   |
 | Mean score   | 696 | 836 | 4096 | 4112 | 6779 | 7492 | 10477 |
 
+In conclusion, when using depth 7, there's ~50% chance that the solver scores 2048 and wins the game. As seen on the table, the solver wasn't able to merge tiles to get higher than a 2048 tile.
+
 ## Current Shortcomings and Future Improvements
 Change tiles to 64bit integer. Improve heuristics.
 
