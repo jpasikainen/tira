@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="673c9df9-37f7-4df0-b516-48c4595ec252" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../documentation/imgs/screenshot.png" beforeDir="false" afterPath="$PROJECT_DIR$/../documentation/imgs/screenshot.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../documentation/implementation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../documentation/implementation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../documentation/reports/w6.md" beforeDir="false" afterPath="$PROJECT_DIR$/../documentation/reports/w6.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../documentation/testing.md" beforeDir="false" afterPath="$PROJECT_DIR$/../documentation/testing.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../results.ods" beforeDir="false" />
-    </list>
+    <list default="true" id="673c9df9-37f7-4df0-b516-48c4595ec252" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
